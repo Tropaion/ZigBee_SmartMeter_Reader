@@ -11,7 +11,7 @@ The first version of the hardware is released and ordered for assembly from jlcp
 
 View the latest [PCB Interactive BOM](https://htmlpreview.github.io/?https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/hardware/bom/ibom.html).
 
-![3D PCB Image](https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/pcb.png?raw=true)
+<center><img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/pcb.png?raw=true" width="35%" /></center>
 
 For this project, I used the [ESP32-C6-MINI-1U](https://www.espressif.com/sites/default/files/documentation/esp32-mini-1_datasheet_en.pdf), thanks to espressif for providing me a few samples.
 I choose the version with external antenna, since, in most cases, the devices will be mounted in an isolated meter box. And, since many of them are made of metal (faraday cage), like in my case, 
