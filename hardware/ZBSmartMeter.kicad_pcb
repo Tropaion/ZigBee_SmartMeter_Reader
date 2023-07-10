@@ -653,7 +653,7 @@
     (property "ki_keywords" "mounting hole")
     (path "/fd9869a4-5274-417e-9609-9ae93af6e644")
     (attr exclude_from_pos_files)
-    (fp_text reference "H1" (at 0 -3.2) (layer "F.SilkS")
+    (fp_text reference "H1" (at 0 -3.2) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 731aab3c-94b2-41a2-a232-92a419d12ccf)
     )
@@ -2700,6 +2700,12 @@
 
   (gr_rect (start 161.671 83.058) (end 204.978 120.65)
     (stroke (width 0.1) (type default)) (fill none) (layer "Edge.Cuts") (tstamp 48dc3419-39d0-4279-be89-ca19f9124499))
+  (gr_text "Reset" (at 162.4838 86.6394 -90) (layer "F.SilkS") (tstamp 28557ba1-6738-4f5f-95a5-f876e081558a)
+    (effects (font (size 1 1) (thickness 0.15)) (justify left bottom))
+  )
+  (gr_text "ZigBee" (at 162.4584 112.8268 -90) (layer "F.SilkS") (tstamp 2fedcb2b-7ccd-4429-b445-aa14e6b8c28d)
+    (effects (font (size 1 1) (thickness 0.15)) (justify left bottom))
+  )
 
   (segment (start 184.549954 89.303702) (end 185.669954 89.303702) (width 0.25) (layer "F.Cu") (net 1) (tstamp 2dfd820e-c49f-4ded-aa9c-71b6cce4511b))
   (segment (start 182.372 118.888296) (end 182.752266 119.268562) (width 0.5) (layer "F.Cu") (net 1) (tstamp 40a78a0e-c34a-4de2-bb36-f14947f22b8e))
