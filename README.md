@@ -1,7 +1,7 @@
 # ZigBee_SmartMeter_Reader
 This is a open-source ZigBee device based on the new ESP32-C6 to collect data from smartmeters using the DLMS/COSEM protocol.
 
-Ever since I got the SmartMeter "Sagemcom T-210D" with the P1 user interface, I wanted to integrate it into my ZigBee network.
+Ever since I got the smartmeter "Sagemcom T-210D" with the P1 user interface, I wanted to integrate it into my ZigBee network.
 Since I didn't find any existing solution, I decided to develop my own.
 
 THE PROJECT IS STILL WIP.
@@ -9,7 +9,7 @@ THE PROJECT IS STILL WIP.
 # Hardware
 The first version of the hardware is released and ordered for assembly from jlcpcb.
 
-View the lateste [PCB Interactive BOM](https://htmlpreview.github.io/?https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/hardware/bom/ibom.html).
+View the latest [PCB Interactive BOM](https://htmlpreview.github.io/?https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/hardware/bom/ibom.html).
 
 For this project, I used the [ESP32-C6-MINI-1U](https://www.espressif.com/sites/default/files/documentation/esp32-mini-1_datasheet_en.pdf), thanks to espressif for providing me a few samples.
 I choose the version with external antenna, since, in most cases, the devices will be mounted in an isolated meter box. And, since many of them are made of metal (faraday cage), like in my case, 
