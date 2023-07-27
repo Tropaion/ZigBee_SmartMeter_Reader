@@ -7,8 +7,6 @@ Since I didn't find any existing solution, I decided to develop my own.
 THE PROJECT IS STILL WIP.
 
 # Hardware
-The first version of the hardware is released and ordered for assembly from jlcpcb.
-
 View the latest [PCB Interactive BOM](https://htmlpreview.github.io/?https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/hardware/bom/ibom.html).
 
 <img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/pcb.png?raw=true" width="35%" />
@@ -26,7 +24,11 @@ Since most smartmeters send encrypted data, for which you need to request an dec
 This key has to be configured in the software. The current plan for this is to provide a simple configuration terminal which is accessible via the USB-C-Socket.
 
 # Software
-Currently doing a few tests with the esp developement board. Serious developement will begin when the hardware from jlcpcb arrives.
+Currently doing a few tests with the esp developement board.
 
 # Enclosue
-WIP
+The first version of the enclosure is released and now in printing.
+
+<img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/Enclosure_1.png?raw=true" width="35%" />
+<img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/Enclosure_2.png?raw=true" width="35%" />
+<img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/Enclosure_3.png?raw=true" width="35%" />
