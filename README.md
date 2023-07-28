@@ -24,7 +24,13 @@ Since most smartmeters send encrypted data, for which you need to request an dec
 This key has to be configured in the software. The current plan for this is to provide a simple configuration terminal which is accessible via the USB-C-Socket.
 
 # Software
-Currently doing a few tests with the esp developement board.
+The software will be separated into four components/libraries.
+Each will be individually tested and then combined.
+
+- [ ] configuration_console - usb console to configure device (decryption key)
+- [x] human_interface - handle button input and led (working)
+- [ ] Zigbee - handle everything zigbee related
+- [ ] UART/DLMS - read data via uart and decrypt
 
 # Enclosue
 The first version of the enclosure is released and now in printing.
