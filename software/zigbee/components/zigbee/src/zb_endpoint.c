@@ -9,21 +9,18 @@
 
 /* Setup logging */
 #include "esp_log.h"
-static const char* TAG = "zb_endpoint";
+static const char* TAG = "zb_dlms_ep";
 
-/* Library header */
+/* Header */
 #include "zb_endpoint.h"
-
-/* Zigbee library */
-#include "esp_zigbee_core.h"
 
 /* Values for basic cluster */
 #define BASIC_ZCL_VERSION                   ESP_ZB_ZCL_BASIC_ZCL_VERSION_DEFAULT_VALUE
 #define BASIC_APPLICATION_VERSION           ESP_ZB_ZCL_BASIC_APPLICATION_VERSION_DEFAULT_VALUE
 #define BASIC_STACK_VERSION                 ESP_ZB_ZCL_BASIC_STACK_VERSION_DEFAULT_VALUE
 #define BASIC_HW_VERSION                    ESP_ZB_ZCL_BASIC_HW_VERSION_DEFAULT_VALUE
-#define BASIC_MANUFACTURER_NAME             " xxx"
-#define BASIC_MODEL_NAME                    " xxx"
+#define BASIC_MANUFACTURER_NAME             " github.com/Tropaion"
+#define BASIC_MODEL_NAME                    " SmartMeter"
 #define BASIC_POWER_SOURCE                  ESP_ZB_ZCL_BASIC_POWER_SOURCE_DEFAULT_VALUE
 
 /* Values for identify cluster */
@@ -32,7 +29,7 @@ static const char* TAG = "zb_endpoint";
 /**
  * @brief Create endpoint for dlms
  */
-static void zb_dlms_ep(esp_zb_ep_list_t *esp_zb_ep_list)
+void zb_dlms_ep(esp_zb_ep_list_t *esp_zb_ep_list)
 {
     /* === CREATE BASIC CLUSTER (REQUIRED) (0x00) === */
     esp_zb_attribute_list_t *esp_zb_basic_cluster = esp_zb_zcl_attr_list_create(ESP_ZB_ZCL_CLUSTER_ID_BASIC);
@@ -88,5 +85,5 @@ static void zb_dlms_ep(esp_zb_ep_list_t *esp_zb_ep_list)
     ESP_ERROR_CHECK(esp_zb_cluster_list_add_identify_cluster(esp_zb_cluster_list, esp_zb_identify_client_cluster, ESP_ZB_ZCL_CLUSTER_CLIENT_ROLE));
 
     /* === ADD CREATED ENDPOINT TO LIST === */
-    //TODO: ESP_ERROR_CHECK(esp_zb_ep_list_add_ep(esp_zb_ep_list, esp_zb_cluster_list, HA_DLMS_ENDPOINT, ESP_ZB_AF_HA_PROFILE_ID, ESP_ZB_HA_TEMPERATURE_SENSOR_DEVICE_ID));
+    ESP_ERROR_CHECK(esp_zb_ep_list_add_ep(esp_zb_ep_list, esp_zb_cluster_list, HA_DLMS_ENDPOINT, ESP_ZB_AF_HA_PROFILE_ID, ESP_ZB_HA_METER_INTERFACE_DEVICE_ID));
 }

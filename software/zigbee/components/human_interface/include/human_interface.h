@@ -22,13 +22,14 @@ typedef void (* bttn_cb_t)(void *button_handle, void *usr_data);
 
 /* ===== LED CONFIGURATION ===== */
 #define LED_GPIO_NUM                    1
-#define LED_BLINK_NUM                   3
+#define LED_BLINK_NUM                   4
 
 /* Define blink types according to priority */
 typedef enum {
     BLINK_RESET,
     BLINK_COUPLING,
     BLINK_SENDING_DATA,
+    BLINK_START_UP,
 } led_blink_type_t;
 
 /* ===== BUTTON FUNCTIONS ===== */

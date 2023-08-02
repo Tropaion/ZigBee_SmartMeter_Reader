@@ -11,11 +11,14 @@
 #include "esp_log.h"
 static const char* TAG = "zb_main";
 
-/* Library header */
+/* Header */
 #include "zb_main.h"
-#include "zb_endpoint.h"
+
+/* Human Interface Library */
+#include "human_interface.h"
 
 /* Zigbee libraries */
+#include "zb_endpoint.h"
 #include "ha/esp_zigbee_ha_standard.h"
 #include "nvs_flash.h"
 
@@ -31,23 +34,23 @@ static const char* TAG = "zb_main";
 #endif
 
 /* ===== CALLBACK FUNCTIONS ===== */
-/**
- * @brief Wrapper for commissioning callback
- * 
- * @param mode_mask 
- */
-static void bdb_start_top_level_commissioning_cb(uint8_t mode_mask)
+static void zb_reset_button_cb(void *button_handle, void *usr_data)
 {
-    ESP_ERROR_CHECK(esp_zb_bdb_start_top_level_commissioning(mode_mask));
+    ESP_LOGI(TAG, "Reset initiated by button press");
+
+    /* Start led indication */
+    led_animation_start(BLINK_RESET);
+    vTaskDelay(RESET_BUTTON_ANIMATION_TIME_MS / portTICK_PERIOD_MS);
+
+    /* Factoy reset */
+    esp_zb_factory_reset();
 }
 
 /**
- * @brief Callback function, for example is called by esp_zb_start()
- * Handles state signal, for example if stack is initialized or network steering is done
+ * @brief Handles state signal, for example if stack is initialized or network steering is done
  * 
  * @param signal_struct 
  */
-//TODO: Copy from latest version
 void esp_zb_app_signal_handler(esp_zb_app_signal_t *signal_struct)
 {
     /* Get error status of signal */
@@ -57,8 +60,7 @@ void esp_zb_app_signal_handler(esp_zb_app_signal_t *signal_struct)
     uint32_t *p_sg_p       = signal_struct->p_app_signal;
     esp_zb_app_signal_type_t sig_type = *p_sg_p;
 
-    /* Handle signal according to signal type */
-    /* Signal type description: https://developer.nordicsemi.com/nRF_Connect_SDK/doc/zboss/3.5.2.0/group__zb__comm__signals.html#gab55565980ef0580712f8dc160b01ea06*/
+    /* Handle signal types: https://developer.nordicsemi.com/nRF_Connect_SDK/doc/zboss/3.5.2.0/group__zb__comm__signals.html#gab55565980ef0580712f8dc160b01ea06*/
     switch (sig_type) {
         /* Called by "esp_zb_start" when autostart is disabled */
         case ESP_ZB_ZDO_SIGNAL_SKIP_STARTUP:
@@ -73,9 +75,13 @@ void esp_zb_app_signal_handler(esp_zb_app_signal_t *signal_struct)
         case ESP_ZB_BDB_SIGNAL_DEVICE_FIRST_START:
             /* do nothing */
 
-        /* Device started using the NVRAM contents */
+        /* Device rebootet, initializing */
         case ESP_ZB_BDB_SIGNAL_DEVICE_REBOOT:
             if (err_status == ESP_OK) {
+                /* Indicate network search */
+                ESP_ERROR_CHECK(led_animation_stop(BLINK_START_UP));
+                ESP_ERROR_CHECK(led_animation_start(BLINK_COUPLING));
+
                 /* Start forming/joining zigbee network */
                 ESP_LOGI(TAG, "Start network steering");
                 esp_zb_bdb_start_top_level_commissioning(ESP_ZB_BDB_MODE_NETWORK_STEERING);
@@ -85,9 +91,12 @@ void esp_zb_app_signal_handler(esp_zb_app_signal_t *signal_struct)
             }
             break;
 
-        /* BDB network steering completed */
         case ESP_ZB_BDB_SIGNAL_STEERING:
+            /* Successfully joined network */
             if (err_status == ESP_OK) {
+                /* Stop led coupling indication */
+                ESP_ERROR_CHECK(led_animation_stop(BLINK_COUPLING));
+
                 /* Get and print PAN-ID of joined network */
                 esp_zb_ieee_addr_t extended_pan_id;
                 esp_zb_get_extended_pan_id(extended_pan_id);
@@ -95,27 +104,29 @@ void esp_zb_app_signal_handler(esp_zb_app_signal_t *signal_struct)
                         extended_pan_id[7], extended_pan_id[6], extended_pan_id[5], extended_pan_id[4],
                         extended_pan_id[3], extended_pan_id[2], extended_pan_id[1], extended_pan_id[0],
                         esp_zb_get_pan_id(), esp_zb_get_current_channel());
-
-                /* Run initialization functions from callback list */
-                ESP_ERROR_CHECK(zb_main_run_init_cb());
             } 
             else {
                 /* Failed to join network */
                 ESP_LOGI(TAG, "Network steering was not successful (status: %d)", err_status);
 
                 /* Try joining again after 1s */
-                esp_zb_scheduler_alarm((esp_zb_callback_t)bdb_start_top_level_commissioning_cb, ESP_ZB_BDB_MODE_NETWORK_STEERING, 1000);
+                esp_zb_scheduler_alarm((esp_zb_callback_t)esp_zb_bdb_start_top_level_commissioning, ESP_ZB_BDB_MODE_NETWORK_STEERING, 1000);
             }
             break;
 
         /* Device left network */
         case ESP_ZB_ZDO_SIGNAL_LEAVE:
             esp_zb_zdo_signal_leave_params_t *leave_params = (esp_zb_zdo_signal_leave_params_t *)esp_zb_app_signal_get_params(p_sg_p);
-            //TODO: Handle leave request from coordinator
-
-            /* Leaving was initiated from this device (button,..) */
+            /* Leave request from coordinator */
             if (leave_params->leave_type == ESP_ZB_NWK_LEAVE_TYPE_RESET) {
-                ESP_LOGI(TAG, "Reset device");
+                ESP_LOGI(TAG, "Resetting device because of external leave request");
+
+                /* Start led indication */
+                led_animation_start(BLINK_RESET);
+                vTaskDelay(RESET_BUTTON_ANIMATION_TIME_MS / portTICK_PERIOD_MS);
+
+                /* Factory reset, performs leave procedure */
+                esp_zb_factory_reset();
             }
             break;
 
@@ -129,11 +140,11 @@ void esp_zb_app_signal_handler(esp_zb_app_signal_t *signal_struct)
 
 /* ===== MAIN FUNCTIONS ===== */
 /**
- * @brief In this function, the device functionality (clusters, endpoints) is defined and application will be started
+ * @brief Zigbee configuration is loaded and stack runs in loop
  * 
  * @param pvParameters 
  */
-static void zb_main_task(void *pvParameters)
+static void zb_task(void *pvParameters)
 {
     /* Initialize zigbee stack with end-device config */ 
     esp_zb_cfg_t zb_nwk_cfg = ESP_ZB_ZR_CONFIG();
@@ -148,13 +159,13 @@ static void zb_main_task(void *pvParameters)
     /* Register endpoint list to stack */
     esp_zb_device_register(esp_zb_ep_list);
 
-    /* Set which zigbee channels to use */
-    esp_zb_set_primary_network_channel_set(ZB_PRIMARY_CHANNEL_MASK);
+    /* Set zigbee channels */
+    esp_zb_set_primary_network_channel_set(ESP_ZB_PRIMARY_CHANNEL_MASK);
 
-    /* Start zigbee and check for error, afterwards, function "esp_zb_app_signal_handler" is called */
+    /* Start zigbee stack */
     ESP_ERROR_CHECK(esp_zb_start(false));
 
-    /* Run zigbee functionality in loop */
+    /* Run zigbee stack in loop */
     esp_zb_main_loop_iteration();
 }
 
@@ -165,10 +176,15 @@ static void zb_main_task(void *pvParameters)
  */
 esp_err_t zb_run()
 {
+    /* Initialize human interface */
+    ESP_ERROR_CHECK(led_init());
+    ESP_ERROR_CHECK(led_animation_start(BLINK_START_UP));
+    ESP_ERROR_CHECK(button_init(zb_reset_button_cb));
+
     /* Initialize non-volatile flash */
     ESP_ERROR_CHECK(nvs_flash_init());
 
-    /* Operating mode (single processor or co-processor) */
+    /* Operating mode */
     esp_zb_platform_config_t config = {
         .radio_config = ZB_DEFAULT_RADIO_CONFIG(),
         .host_config = ZB_DEFAULT_HOST_CONFIG(),
@@ -178,7 +194,7 @@ esp_err_t zb_run()
     ESP_ERROR_CHECK(esp_zb_platform_config(&config));
 
     /* Create zigbee background task */
-    xTaskCreate(zb_main_task, "ZB_MAIN", 4096, NULL, 5, NULL);
+    xTaskCreate(zb_task, "ZB_TASK", 4096, NULL, 5, NULL);
 
     return ESP_OK;
 }

@@ -74,11 +74,18 @@ esp_err_t led_init()
         {LED_BLINK_STOP, 0, 0},
     };
 
+    /* start up animation */
+    static const blink_step_t blink_start_up[] = {
+        {LED_BLINK_HOLD, LED_STATE_ON, 0},
+        {LED_BLINK_STOP, 0, 0},
+    };
+
     /* create animation list */
     static blink_step_t const* blink_list[] = {
         [BLINK_RESET] = blink_reset,
         [BLINK_COUPLING] = blink_coupling,
         [BLINK_SENDING_DATA] = blink_sending_data,
+        [BLINK_START_UP] = blink_start_up,
     };
 
     /* GPIO configuration */

@@ -14,11 +14,14 @@ extern "C" {
 
 #include "esp_zigbee_core.h"
 
+/* ===== ZIGBEE GENERAL CONFIGURATION ===== */
+#define RESET_BUTTON_ANIMATION_TIME_MS      2500
+
 /* ===== ZIGBEE RF CONFIGURATION ===== */
 // https://docs.espressif.com/projects/esp-zigbee-sdk/en/latest/esp32/developing.html
-#define MAX_CHILDREN                      10                                    /* the max amount of connected devices */
-#define INSTALLCODE_POLICY_ENABLE         false                                 /* enable the install code policy for security */
-#define ESP_ZB_PRIMARY_CHANNEL_MASK       ESP_ZB_TRANSCEIVER_ALL_CHANNELS_MASK  /* Zigbee primary channel mask use in the example */
+#define MAX_CHILDREN                        10                                    /* the max amount of connected devices */
+#define INSTALLCODE_POLICY_ENABLE           false                                 /* enable the install code policy for security */
+#define ESP_ZB_PRIMARY_CHANNEL_MASK         ESP_ZB_TRANSCEIVER_ALL_CHANNELS_MASK  /* Zigbee primary channel mask use in the example */
 
 /**
  * @brief Configure as zigbee as router

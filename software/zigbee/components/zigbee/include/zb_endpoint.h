@@ -12,6 +12,9 @@
 extern "C" {
 #endif
 
+/* Zigbee Library */
+#include "esp_zigbee_core.h"
+
 /* General configuration values */
 #define HA_DLMS_ENDPOINT    	            1
 
