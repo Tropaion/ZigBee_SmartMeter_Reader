@@ -25,7 +25,7 @@ static const char* TAG = "dlms";
 #include "hal/uart_hal.h" /* for interrupt mask defines */
 
 /* UART Event Queue */
-static QueueHandle_t uart1_queue;
+static QueueHandle_t uart1_queue = NULL;
 
 /* UART Event Handler */
 static void uart_event_task(void *pvParameters)
@@ -39,7 +39,7 @@ static void uart_event_task(void *pvParameters)
     for(;;)
     {
         /* Loop infinitely and check for event */
-        if(xQueueReceive(uart1_queue, (void*)&event, (TickType_t)portMAX_DELAY))
+        if(xQueueReceive(uart1_queue, (void *)&event, (TickType_t)portMAX_DELAY))
         {
             /* Set buffer to zero */
             bzero(&buff, UART_EVENT_BUFFER_SIZE);
@@ -92,20 +92,22 @@ esp_err_t dlms_init()
     };
 
     /* Set interrupt configuration */
-    err = uart_intr_config(UART_PORT_NUMBER, &uart_intr);
-    if(err != ESP_OK){ return err; }
+    //err = uart_intr_config(UART_PORT_NUMBER, &uart_intr);
+    //if(err != ESP_OK){ return err; }
 
     /* Enable interrupts */
-    err = uart_enable_rx_intr(UART_PORT_NUMBER);
-    if(err != ESP_OK){ return err; }
+    //err = uart_enable_rx_intr(UART_PORT_NUMBER);
+    //if(err != ESP_OK){ return err; }
 
     /* Set communication pins */
     err = uart_set_pin(UART_PORT_NUMBER, UART_TX_GPIO, UART_RX_GPIO, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE);
     if(err != ESP_OK){ return err; }
 
-    /* Create a task to handle events */
-    xTaskCreate(uart_event_task, "uart_event_task", 2048, NULL, 12, NULL);
-
     /* Install driver */
-    return uart_driver_install(UART_PORT_NUMBER, UART_BUFFER_SIZE, 0, 0, NULL, 0);
+    err = uart_driver_install(UART_PORT_NUMBER, UART_BUFFER_SIZE, 0, 20, &uart1_queue, 0);
+    if(err != ESP_OK){ return err; }
+
+    /* Create a task to handle events */
+    xTaskCreate(uart_event_task, "uart_event_task", UART_EVENT_BUFFER_SIZE + 1024, NULL, 12, NULL);
+    return err;
 }

@@ -21,7 +21,7 @@ extern "C" {
 #define UART_PORT_NUMBER                UART_NUM_1
 #define UART_RX_GPIO                    22
 #define UART_TX_GPIO                    23
-#define UART_BUFFER_SIZE                (1024 * 2)
+#define UART_BUFFER_SIZE                1024
 #define UART_BAUD_RATE                  2400
 
 #define UART_EVENT_BUFFER_SIZE          (UART_BUFFER_SIZE)
