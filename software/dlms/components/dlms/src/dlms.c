@@ -108,6 +108,6 @@ esp_err_t dlms_init()
     if(err != ESP_OK){ return err; }
 
     /* Create a task to handle events */
-    xTaskCreate(uart_event_task, "uart_event_task", UART_EVENT_BUFFER_SIZE + 1024, NULL, 12, NULL);
+    xTaskCreate(uart_event_task, "uart_event_task", UART_EVENT_BUFFER_SIZE + 2048, NULL, 12, NULL);
     return err;
 }
