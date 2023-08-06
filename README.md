@@ -39,9 +39,9 @@ How the data is handled is a bit complicated and consists of three layers:
 - DLMS-Layer
 - OBIS-Layer
 
-For each layer I'm writing a parser.
+Each layer will be handled by a parser.
 
-To understand the structure and how the parser handles the data I created a diagramm:
+See the diagramm to understand the structure and how the parser handles the data:
 <img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/smartmeter_data.jpg?raw=true" />
 
 ### Sources
