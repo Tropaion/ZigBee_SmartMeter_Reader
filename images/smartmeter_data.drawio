@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-08-06T15:20:04.513Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36" etag="ESOizmarzgrnQyUgxHHO" version="21.6.6" type="device">
+<mxfile host="app.diagrams.net" modified="2023-08-06T16:22:43.607Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36" etag="l05kOg9hkSESQfk5tNFn" version="21.6.6" type="device">
   <diagram name="Page-1" id="bMnRTJeaha1qu6vLoEiu">
-    <mxGraphModel dx="672" dy="639" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1833" dy="649" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -64,7 +64,7 @@
         <mxCell id="pV_JDV0v9IwJhebryxbU-21" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.annotation_2;align=left;labelPosition=right;pointerEvents=1;" parent="1" vertex="1">
           <mxGeometry x="580" y="80" width="50" height="400" as="geometry" />
         </mxCell>
-        <mxCell id="pV_JDV0v9IwJhebryxbU-22" value="Function checks start bytes and reads L-Field, which indicates the size of C-Field + A Field + CI-Field + User Data Size -&amp;gt; User Data Size -+ 3 Bytes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=0;" parent="1" vertex="1">
+        <mxCell id="pV_JDV0v9IwJhebryxbU-22" value="Function checks start bytes and reads L-Field, which indicates the size of C-Field + A Field + CI-Field + User Data Size -&amp;gt; User Data Size + 3 Bytes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=0;" parent="1" vertex="1">
           <mxGeometry x="307.5" y="110" width="212.5" height="100" as="geometry" />
         </mxCell>
         <mxCell id="pV_JDV0v9IwJhebryxbU-23" value="Skipped" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
@@ -172,7 +172,7 @@
         <mxCell id="pV_JDV0v9IwJhebryxbU-54" value="Only General-Glo-Cyphering (0xDB) suppoerted" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="827" y="125" width="158" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="pV_JDV0v9IwJhebryxbU-55" value="If data is separated into multiple frames, encrypted data will be stacked together and aftwards decrypted&amp;nbsp;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+        <mxCell id="pV_JDV0v9IwJhebryxbU-55" value="If data is separated into multiple frames, encrypted data will be stacked together and afterwards decrypted&amp;nbsp;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="800" y="430" width="230" height="30" as="geometry" />
         </mxCell>
         <mxCell id="pV_JDV0v9IwJhebryxbU-56" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.annotation_2;align=left;labelPosition=right;pointerEvents=1;rotation=-180;" parent="1" vertex="1">
@@ -218,7 +218,7 @@
         <mxCell id="qA9opMCXfgoF__4_dtre-3" value="Checked for validity" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="1230" y="85" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="RZn37kDPLR84F1-D-_or-2" value="Saved for decryption" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="RZn37kDPLR84F1-D-_or-2" value="Saved for decryption" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="820" y="325" width="133" height="30" as="geometry" />
         </mxCell>
       </root>
