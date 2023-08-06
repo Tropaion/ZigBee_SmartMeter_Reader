@@ -30,10 +30,10 @@ Each will be individually tested and then combined.
 
 - [ ] configuration_console - usb console to configure device (decryption key)
 - [x] human_interface - handle button input and led (working)
-- [ ] Zigbee - handle everything zigbee related
-- [ ] UART/DLMS - read data via uart and decrypt
+- [ ] zigbee - handle everything zigbee related
+- [ ] smartmeter - read data via uart, parse layers and decrypt data
 
-### Structure of SmartMeter data
+## Structure of SmartMeter data
 How the data is handled is a bit complicated and consists of three layers:
 - MBUS-Layer
 - DLMS-Layer
@@ -43,6 +43,13 @@ For each layer I'm writing a parser.
 
 To understand the structure and how the parser handles the data I created a diagramm:
 <img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/smartmeter_data.jpg?raw=true" />
+
+### Sources
+ * [esphome-dlms-meter](https://github.com/DomiStyle/esphome-dlms-meter)
+ * [SmartMeter P1 Interface](https://www.netz-noe.at/Download-(1)/Smart-Meter/218_9_SmartMeter_Kundenschnittstelle_lektoriert_14.aspx)
+ * [M-Bus Specification, Page 22+](https://m-bus.com/assets/downloads/MBDOC48.PDF)
+ * [ZigBee Home Automation Profile](https://community.nxp.com/pwmxy87654/attachments/pwmxy87654/wireless-connectivity/698/1/075367r03ZB_AFG-Home_Automation_Profile_for_Public_Download.pdf)
+ * [ZigBee Cluster Library Specification](https://zigbeealliance.org/wp-content/uploads/2019/12/07-5123-06-zigbee-cluster-library-specification.pdf)
 
 # Enclosue
 The first version of the enclosure is released and now in printing.

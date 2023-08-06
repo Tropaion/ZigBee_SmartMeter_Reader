@@ -11,9 +11,9 @@
 #include "esp_log.h"
 static const char *TAG = "app_main";
 
-#include "dlms.h"
+#include "smartmeter.h"
 
 void app_main(void)
 {
-    ESP_ERROR_CHECK(dlms_init());
+    ESP_ERROR_CHECK(smartmeter_init());
 }
