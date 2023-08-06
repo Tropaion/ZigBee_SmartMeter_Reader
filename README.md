@@ -33,13 +33,14 @@ Each will be individually tested and then combined.
 - [ ] Zigbee - handle everything zigbee related
 - [ ] UART/DLMS - read data via uart and decrypt
 
-#### Structure of SmartMeter data
+### Structure of SmartMeter data
 How the data is handled is a bit complicated and consists of three layers:
 - MBUS-Layer
 - DLMS-Layer
 - OBIS-Layer
 
 For each layer I'm writing a parser.
+
 To understand the structure and how the parser handles the data I created a diagramm:
 <img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/smartmeter_data.jpg?raw=true" />
 
