@@ -41,7 +41,7 @@ How the data is handled is a bit complicated and consists of three layers:
 
 For each layer I'm writing a parser.
 To understand the structure and how the parser handles the data I created a diagramm:
-<img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/smartmeter_data.svg?raw=true" />
+<img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/smartmeter_data.jpg?raw=true" />
 
 # Enclosue
 The first version of the enclosure is released and now in printing.
