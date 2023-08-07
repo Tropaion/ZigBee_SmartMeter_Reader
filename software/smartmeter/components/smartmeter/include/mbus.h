@@ -21,6 +21,13 @@ extern "C" {
 #define UART_TX_GPIO                    23
 #define UART_BAUD_RATE                  2400
 
+/* SmartMeter sends the data every 5s, so wait until all data send and then process it */
+/* This parameter defines timeout threshold in uart symbol periods(time of sending one byte). */
+/* 2400 Baud = 300 Byte/s -> Timout = 126/300 = 0,42s */
+/* https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/uart.html#_CPPv419uart_set_rx_timeout11uart_port_tK7uint8_t */
+/* https://www.esp32.com/viewtopic.php?t=21294 */
+#define RX_TIMEOUT_TRESHOLD             126 /* < The maximum value of threshold is 126 */
+
 /* === M-BUS PARSER CONFIGURATION === */
 #define MBUS_MAX_SIZE                   256
 

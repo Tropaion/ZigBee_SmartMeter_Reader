@@ -264,11 +264,14 @@ static esp_err_t parse_dlms_layer(uint8_t* user_data, uint16_t user_data_size, u
 static esp_err_t parse_obis(uint8_t* obis_data, uint16_t obis_data_size)
 {
     /* Check for obis data integrity */
-    if(obis_data[0] != 0x0F || obis_data[5] != 0x0C)
+    if(obis_data[OBIS_INTEGRITY_VAL1_OFFSET] != OBIS_INTEGRITY_VAL1 || obis_data[OBIS_INTEGRITY_VAL2_OFFSET] != OBIS_INTEGRITY_VAL2)
     {
         ESP_LOGE(TAG, "OBIS: Decrypted obis data invalid");
         return ESP_FAIL;
     }
+
+    /* Decode data */
+    int curr_offset = 0;
 
     return ESP_OK;
 }
@@ -292,18 +295,17 @@ esp_err_t smartmeter_init()
 
     /* Create interrupt configuration */
     uart_intr_config_t uart_intr = {
-        .intr_enable_mask = UART_INTR_RXFIFO_TOUT | UART_INTR_RXFIFO_FULL,
-        .rxfifo_full_thresh = 20,
-        .rx_timeout_thresh = 2,
+        .intr_enable_mask = UART_INTR_RXFIFO_TOUT,
+        .rx_timeout_thresh = RX_TIMEOUT_TRESHOLD,
     };
 
     /* Set interrupt configuration */
-    //err = uart_intr_config(UART_PORT_NUMBER, &uart_intr);
-    //if(err != ESP_OK){ return err; }
+    err = uart_intr_config(UART_PORT_NUMBER, &uart_intr);
+    if(err != ESP_OK){ return err; }
 
     /* Enable interrupts */
-    //err = uart_enable_rx_intr(UART_PORT_NUMBER);
-    //if(err != ESP_OK){ return err; }
+    err = uart_enable_rx_intr(UART_PORT_NUMBER);
+    if(err != ESP_OK){ return err; }
 
     /* Set communication pins */
     err = uart_set_pin(UART_PORT_NUMBER, UART_TX_GPIO, UART_RX_GPIO, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE);
