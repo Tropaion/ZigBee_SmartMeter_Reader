@@ -81,6 +81,12 @@ static void uart_event_task(void *pvParameters)
     vTaskDelete(NULL);
 }
 
+/* Not working? */
+static void uart_intr_handle(void *arg)
+{
+    ESP_LOGI(TAG, "UART: TIMEOUT!");
+}
+
 /* ===== M-BUS-Layer ===== */
 /**
  * @brief Parser for MBUS-Layer, only long frames!
