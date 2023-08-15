@@ -66,7 +66,7 @@ static esp_err_t parse_obis(uint8_t* obis_data, size_t obis_data_size)
  * @param gue_key key used for decryption
  * @return esp_err_t 
  */
-static esp_err_t parse_dlms_layer(uint8_t* user_data, size_t user_data_size, uint8_t* decrypted_data, size_t* decrypted_data_size, uint8_t* gue_key)
+static esp_err_t parse_dlms_layer(uint8_t* user_data, size_t user_data_size, uint8_t* decrypted_data, size_t* decrypted_data_size, const uint8_t* gue_key)
 {
     /* Encrypted data buffer */
     uint8_t encrypted_data[DATA_BUFFER_SIZE];
@@ -316,12 +316,27 @@ static void uart_event_task(void *pvParameters)
             uart_read_bytes(UART_PORT_NUMBER, &buff0, buff0_size, portMAX_DELAY);
 
             /* Process received data from buffer0 and write to buffer1 */
-            parse_mbus_long_frame_layer(&buff0[0], buff0_size, &buff1[0], &buff1_size);
+            esp_err_t err = parse_mbus_long_frame_layer(&buff0[0], buff0_size, &buff1[0], &buff1_size);
+            
+            /* Check if mbus parsing was successfull */
+            if(err == ESP_OK)
+            {
+                /* Process mbus data from buffer1 and write to buffer0 */
+                err = parse_dlms_layer(&buff1[0], buff1_size, &buff0[0], &buff0_size, &gue_key[0]);
+            }
 
-            /* Process received data from buffer1 and write to buffer0 */
-            //TODO: GUE_KEY
-            uint8_t gue_key[GUE_KEY_LENGTH] = {0x36, 0xC6, 0x66, 0x39, 0xE4, 0x8A, 0x8C, 0xA4, 0xD6, 0xBC, 0x8B, 0x28, 0x2A, 0x79, 0x3B, 0xBB};
-            parse_dlms_layer(&buff1[0], buff1_size, &buff0[0], &buff0_size, &gue_key[0]);
+            /* Check if dlms parsing was successfull */
+            if(err == ESP_OK)
+            {
+                /* Process dlms data from buffer0 */
+                err = parse_obis(&buff0[0], buff0_size);
+            }
+            
+            /* Check if parsing failed */
+            if(err != ESP_OK)
+            {
+                ESP_LOGI(TAG, "UART: Parsing failed.");
+            }
 
             //TEST: PRINT DATA
             printf("Decrypted data Size: %d\n", buff0_size);

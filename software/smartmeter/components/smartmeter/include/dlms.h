@@ -40,6 +40,9 @@ extern "C" {
 #define AES_IV_SIZE                     12
 #define AES_IV_SYST_LENGTH_OFFSET       1           /* < Offset at which length of system title is stored */
 
+/* Decryption key */
+const uint8_t gue_key[GUE_KEY_LENGTH] = {0x52, 0xFC, 0xF7, 0x0B, 0xC3, 0x94, 0x9B, 0x61, 0x3E, 0xC9, 0xE7, 0xB1, 0x5F, 0xAD, 0x55, 0xEF};
+            
 #ifdef __cplusplus
 } // extern "C"
 #endif
