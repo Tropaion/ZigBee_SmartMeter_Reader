@@ -315,6 +315,14 @@ static void uart_event_task(void *pvParameters)
             /* Write bytes to buffer0 */
             uart_read_bytes(UART_PORT_NUMBER, &buff0, buff0_size, portMAX_DELAY);
 
+            //TEST: PRINT DATA
+            printf("Read bytes: %d\n", buff0_size);
+        	for (int i = 0; i < buff0_size; i++)
+        	{
+        	    printf("%02X", buff0[i]);
+        	}
+            printf("\n");
+
             /* Process received data from buffer0 and write to buffer1 */
             esp_err_t err = parse_mbus_long_frame_layer(&buff0[0], buff0_size, &buff1[0], &buff1_size);
             
@@ -335,15 +343,14 @@ static void uart_event_task(void *pvParameters)
             /* Check if parsing failed */
             if(err != ESP_OK)
             {
-                ESP_LOGI(TAG, "UART: Parsing failed.");
-            }
+                ESP_LOGE(TAG, "UART: Parsing failed.");
+                
+                /* Flush ringbuffer */
+                uart_flush_input(UART_PORT_NUMBER);
 
-            //TEST: PRINT DATA
-            printf("Decrypted data Size: %d\n", buff0_size);
-        	for (int i = 0; i < buff0_size; i++)
-        	{
-        	    printf("%02X", buff0[i]);
-        	}
+                /* Reset event queue */
+                xQueueReset(uart1_queue);
+            }
         }
     }
     /* Delete this task */
@@ -376,7 +383,7 @@ esp_err_t smartmeter_init()
     if(err != ESP_OK){ return err; }
 
     /* Create a task to handle events */
-    xTaskCreate(uart_event_task, "uart_event_task", DATA_BUFFER_SIZE + 2048, NULL, 12, NULL);
+    xTaskCreate(uart_event_task, "uart_event_task", ((3 * DATA_BUFFER_SIZE) + 2048), NULL, 12, NULL);
 
     return err;
 }

@@ -1,0 +1,76 @@
+I (23) boot: ESP-IDF v5.2-dev-1736-ga2d76ad38a 2nd stage bootloader
+I (23) boot: compile time Aug 15 2023 18:02:34
+I (24) boot: chip revision: v0.0
+I (27) boot.esp32c6: SPI Speed      : 80MHz
+I (32) boot.esp32c6: SPI Mode       : DIO
+I (37) boot.esp32c6: SPI Flash Size : 2MB
+I (42) boot: Enabling RNG early entropy source...
+I (47) boot: Partition Table:
+I (51) boot: ## Label            Usage          Type ST Offset   Length
+I (58) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (65) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (73) boot:  2 factory          factory app      00 00 00010000 000a2800
+I (80) boot:  3 zb_storage       Unknown data     01 81 000b3000 00004000
+I (88) boot:  4 zb_fct           Unknown data     01 81 000b7000 00000400
+I (95) boot: End of partition table
+I (99) esp_image: segment 0: paddr=00010020 vaddr=42018020 size=0bb90h ( 48016) map    
+I (118) esp_image: segment 1: paddr=0001bbb8 vaddr=40800000 size=04460h ( 17504) load
+I (123) esp_image: segment 2: paddr=00020020 vaddr=42000020 size=14da4h ( 85412) map   
+I (142) esp_image: segment 3: paddr=00034dcc vaddr=40804460 size=06474h ( 25716) load
+I (179) esp_image: segment 4: paddr=0003b248 vaddr=4080a8e0 size=010f8h (  4344) load
+I (184) boot: Loaded app from partition at offset 0x10000
+I (184) boot: Disabling RNG early entropy source...
+I (399) cpu_start: Unicore app
+I (400) cpu_start: Pro cpu up.
+W (409) clk: esp_perip_clk_init() has not been implemented yet
+I (415) cpu_start: Pro cpu start user code
+I (416) cpu_start: cpu freq: 160000000 Hz
+I (416) cpu_start: Application information:
+I (418) cpu_start: Project name:     smartmeter
+I (424) cpu_start: App version:      PCB_v0.2-27-g7db03cb-dirty
+I (430) cpu_start: Compile time:     Aug 15 2023 18:12:10
+I (436) cpu_start: ELF file SHA256:  87d2aad35...
+I (442) cpu_start: ESP-IDF:          v5.2-dev-1736-ga2d76ad38a
+I (448) cpu_start: Min chip rev:     v0.0
+I (453) cpu_start: Max chip rev:     v0.99
+I (458) cpu_start: Chip rev:         v0.0
+I (463) heap_init: Initializing. RAM available for dynamic allocation:
+I (470) heap_init: At 4080C8B0 len 0006FD60 (447 KiB): D/IRAM
+I (476) heap_init: At 4087C610 len 00002F54 (11 KiB): STACK/DIRAM
+I (483) heap_init: At 50000000 len 00003FE8 (15 KiB): RTCRAM
+I (490) spi_flash: detected chip: generic
+I (494) spi_flash: flash io: dio
+W (498) spi_flash: Detected size(4096k) larger than the size in the binary image header(2048k). Using the size in the binary image header.
+I (511) sleep: Configure to isolate all GPIO pins in sleep state
+I (518) sleep: Enable automatic switching of GPIO sleep configuration
+I (525) coexist: coex firmware version: 80b0d89
+I (530) coexist: coexist rom version 5b8dcfa
+I (535) app_start: Starting scheduler on CPU0
+I (540) main_task: Started on CPU0
+I (540) main_task: Calling app_main()
+I (540) uart: queue free spaces: 20
+I (550) main_task: Returned from app_main()
+Read bytes: 120
+68FAFA6853FF000167DB085341475905EAB33D81F820007B3E18A20403A12F98B82AD3C4C325F9150AD46B91F1A063BB6ADDE519990B6FC707D22ABC3A6E3522BE62FE011463EFA3BB329F05DF6B8A92C7E1F412F1D1A5A40CA949FDA262F2FE80A256091448C00DC1B4315855F4628DA9439592CDBDA925
+E (1640) smartmeter: MBUS: Invalid stop byte!
+E (1640) smartmeter: UART: Parsing failed.
+Read bytes: 120
+BB5C695AC0EFB3262D8F6C3CD602EFE5E7A3B49FEEF10A17003F301F521C2B3EB94464B1F4E73AEC273DB73B149675ECDAC32478647DAD3C732C260F75D8EEAB817A55E9C1F7A23E1BB5BF7C3AB31564F09423D327467F4A7D00303EAE7F9DA580D5C9717D3931A5C94A948275AB1978A2B188687316CD43
+E (2210) smartmeter: MBUS: Invalid start bytes!
+E (2210) smartmeter: UART: Parsing failed.
+Read bytes: 34
+2402B31FAC79E0166814146853FF11016707EF424C046D557FE14B7F05DD475EC616
+E (2420) smartmeter: MBUS: Invalid start bytes!
+E (2420) smartmeter: UART: Parsing failed.
+Read bytes: 120
+68FAFA6853FF000167DB085341475905EAB33D81F820007B3E19A936FD6D1887339F222A598B479154BDB7EF2075CEA82BF7A4A6B4B3849ACD603900F2BD6EBFF830A5F125A4F4CA7EDA61E97BB3E95A067CEE623745D034854F89EA05ABB8F8B25C502D24B8FA9B8CEA0A160BCE8B39A7C48306D4346FFF
+E (6640) smartmeter: MBUS: Invalid stop byte!
+E (6640) smartmeter: UART: Parsing failed.
+Read bytes: 120
+3A712359E7A1BAD533DAF19723BB596E7E14F241FABD162B2DF5613981EC9C47B1F081D7D1C0A3FA45A694A72FAB1781599043ADBA80A96F013529875986BF4872211F5F868E270D372A67589D524434F34D94701F483075197B12CC52E7FEAF48939571418BE0E3ECD3CC1549B855FF0D222C5ADB56A298
+E (7210) smartmeter: MBUS: Invalid start bytes!
+E (7210) smartmeter: UART: Parsing failed.
+Read bytes: 34
+2207F715749342166814146853FF110167997AD23DB7A23AE7FDD792879F8ED45516
+E (7420) smartmeter: MBUS: Invalid start bytes!
+E (7420) smartmeter: UART: Parsing failed.
