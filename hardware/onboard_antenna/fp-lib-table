@@ -1,0 +1,5 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "SMAJ40CA")(type "KiCad")(uri "${KIPRJMOD}/custom_components/footprints/SMAJ40CA.pretty")(options "")(descr ""))
+  (lib (name "Espressif")(type "KiCad")(uri "${KIPRJMOD}/custom_components/footprints/Espressif.pretty")(options "")(descr ""))
+)

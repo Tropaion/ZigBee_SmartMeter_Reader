@@ -1,6 +1,0 @@
-(sym_lib_table
-  (version 7)
-  (lib (name "NCN5150DG")(type "KiCad")(uri "${KIPRJMOD}/custom_components/symbols/NCN5150DG.kicad_sym")(options "")(descr ""))
-  (lib (name "Espressif")(type "KiCad")(uri "${KIPRJMOD}/custom_components/symbols/Espressif.kicad_sym")(options "")(descr ""))
-  (lib (name "SMAJ40CA")(type "KiCad")(uri "${KIPRJMOD}/custom_components/symbols/SMAJ40CA.kicad_sym")(options "")(descr ""))
-)
