@@ -229,10 +229,10 @@ static void uart_event_task(void *pvParameters)
     uart_event_t event;
 
     /* First buffer for processing data */
-    uint8_t buff0[DATA_BUFFER_SIZE];
+    static uint8_t buff0[DATA_BUFFER_SIZE];
 
     /* Second buffer for processing data */
-    uint8_t buff1[DATA_BUFFER_SIZE];
+    static uint8_t buff1[DATA_BUFFER_SIZE];
 
     /* Ticks to wait before received bytes are processed */
     const TickType_t timeout_ticks = UART_RX_TIMEOUT / portTICK_PERIOD_MS;
@@ -314,14 +314,6 @@ static void uart_event_task(void *pvParameters)
             /* Write bytes to buffer0 */
             uart_read_bytes(UART_PORT_NUMBER, &buff0, buff0_size, portMAX_DELAY);
 
-            //TEST: PRINT DATA
-            printf("Read bytes: %d\n", buff0_size);
-        	for (int i = 0; i < buff0_size; i++)
-        	{
-        	    printf("%02X", buff0[i]);
-        	}
-            printf("\n");
-
             /* Process received data from buffer0 and write to buffer1 */
             esp_err_t err = parse_mbus_long_frame_layer(&buff0[0], buff0_size, &buff1[0], &buff1_size);
             
@@ -331,6 +323,14 @@ static void uart_event_task(void *pvParameters)
                 /* Process mbus data from buffer1 and write to buffer0 */
                 err = parse_dlms_layer(&buff1[0], buff1_size, &buff0[0], &buff0_size, &gue_key[0]);
             }
+
+            //TEST: PRINT DATA
+            printf("Decrypted data size: %d\n", buff0_size);
+        	for (int i = 0; i < buff0_size; i++)
+        	{
+        	    printf("%02X", buff0[i]);
+        	}
+            printf("\n");
 
             /* Check if dlms parsing was successfull */
             if(err == ESP_OK)
