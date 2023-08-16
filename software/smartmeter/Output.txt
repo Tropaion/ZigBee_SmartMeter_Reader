@@ -4,6 +4,114 @@ E068FAFA6853FF000167DB085341475905EAB33D81F820007B7DD032EBF91F20CF6990A94953D4C7
 E (32894) smartmeter: UART: Parsing failed.
 Decrypted data size: 243
 0F801BF7800C07E708100311131E00FF88820223090C07E708100311131E00FF888209060100010800FF060089623602020F00161E09060100020800FF060000005002020F00161E09060100010700FF06000007D902020F00161B09060100020700FF060000000002020F00161B09060100200700FF12090902020FFF162309060100340700FF1208FD02020FFF162309060100480700FF12090A02020FFF1623090601001F0700FF12005002020FFE162109060100330700FF12012D02020FFE162109060100470700FF12010802020FFE1621090601000D0700FF1203A802020FFD16FF090C313738323130323637333839
+<DataNotification>
+  <!-- High priority. -->
+  <!-- Invoke ID: 1832832 -->
+  <LongInvokeIdAndPriority Value="801BF780" />
+  <!-- 16.08.2023 17:19:30 -->
+  <DateTime Value="07E708100311131E00FF8882" />
+  <NotificationBody>
+    <DataValue>
+      <Structure Qty="23" >
+        <!-- 16.08.2023 17:19:30+02:00 -->
+        <OctetString Value="07E708100311131E00FF8882" />
+        <!-- 1.0.1.8.0.255 -->
+        <OctetString Value="0100010800FF" />
+        <UInt32 Value="00896236" /> Wirkenergie A+: 9003574Wh
+        <Structure Qty="02" >
+          <Int8 Value="00" />
+          <Enum Value="1E" />
+        </Structure>
+        <!-- 1.0.2.8.0.255 -->
+        <OctetString Value="0100020800FF" />
+        <UInt32 Value="00000050" /> Wirkenergie A-: 80Wh 
+        <Structure Qty="02" >
+          <Int8 Value="00" />
+          <Enum Value="1E" />
+        </Structure>
+        <!-- 1.0.1.7.0.255 -->
+        <OctetString Value="0100010700FF" />
+        <UInt32 Value="000007D9" /> Momentanleistung P+: 2009W
+        <Structure Qty="02" >
+          <Int8 Value="00" />
+          <Enum Value="1B" />
+        </Structure>
+        <!-- 1.0.2.7.0.255 -->
+        <OctetString Value="0100020700FF" />
+        <UInt32 Value="00000000" /> Momentanleistung P-: 0W
+        <Structure Qty="02" >
+          <Int8 Value="00" />
+          <Enum Value="1B" />
+        </Structure>
+        <!-- 1.0.32.7.0.255 -->
+        <OctetString Value="0100200700FF" />
+        <UInt16 Value="0909" /> Spannung L1: 231,3V
+        <Structure Qty="02" >
+          <Int8 Value="FFFFFFFFFFFFFFFF" />
+          <Enum Value="23" />
+        </Structure>
+        <!-- 1.0.52.7.0.255 -->
+        <OctetString Value="0100340700FF" />
+        <UInt16 Value="08FD" /> Spannung L2: 230,1V
+        <Structure Qty="02" >
+          <Int8 Value="FFFFFFFFFFFFFFFF" />
+          <Enum Value="23" /> 
+        </Structure>
+        <!-- 1.0.72.7.0.255 -->
+        <OctetString Value="0100480700FF" />
+        <UInt16 Value="090A" /> Spannung L3: 231,4V
+        <Structure Qty="02" >
+          <Int8 Value="FFFFFFFFFFFFFFFF" />
+          <Enum Value="23" />
+        </Structure>
+        <!-- 1.0.31.7.0.255 -->
+        <OctetString Value="01001F0700FF" />
+        <UInt16 Value="0050" /> Strom L1: 0,80A
+        <Structure Qty="02" >
+          <Int8 Value="FFFFFFFFFFFFFFFE" />
+          <Enum Value="21" />
+        </Structure>
+        <!-- 1.0.51.7.0.255 -->
+        <OctetString Value="0100330700FF" />
+        <UInt16 Value="012D" /> Strom L2: 3,01A
+        <Structure Qty="02" >
+          <Int8 Value="FFFFFFFFFFFFFFFE" />
+          <Enum Value="21" />
+        </Structure>
+        <!-- 1.0.71.7.0.255 -->
+        <OctetString Value="0100470700FF" />
+        <UInt16 Value="0108" /> Strom L3: 2,64A
+        <Structure Qty="02" >
+          <Int8 Value="FFFFFFFFFFFFFFFE" />
+          <Enum Value="21" />
+        </Structure>
+        <!-- 1.0.13.7.0.255 -->
+        <OctetString Value="01000D0700FF" />
+        <UInt16 Value="03A8" /> Leistungsfaktor: 0,936
+        <Structure Qty="02" >
+          <Int8 Value="FFFFFFFFFFFFFFFD" />
+          <Enum Value="FF" />
+        </Structure>
+        <!-- 178210267389 -->
+        <OctetString Value="313738323130323637333839" />
+      </Structure>
+    </DataValue>
+  </NotificationBody>
+</DataNotification>
+
+Ergebnis:
+Wirkenergie A+: 9003574Wh
+Wirkenergie A-: 80Wh
+Momentanleistung P+: 2009W
+Momentanleistung P-: 0W
+Spannung L1: 231,3V
+Spannung L2: 230,1V
+Spannung L3: 231,4V
+Strom L1: 0,80A
+Strom L2: 3,01A
+Strom L3: 2,64A
+Leistungsfaktor: 0,936
+
 Decrypted data size: 243
 0F801BF7810C07E708100311132300FF88820223090C07E708100311132300FF888209060100010800FF060089623802020F00161E09060100020800FF060000005002020F00161E09060100010700FF060000058C02020F00161B09060100020700FF060000000002020F00161B09060100200700FF12090B02020FFF162309060100340700FF1208FC02020FFF162309060100480700FF12090902020FFF1623090601001F0700FF12004E02020FFE162109060100330700FF12012D02020FFE162109060100470700FF12011002020FFE1621090601000D0700FF1203B202020FFD16FF090C313738323130323637333839
 Decrypted data size: 243

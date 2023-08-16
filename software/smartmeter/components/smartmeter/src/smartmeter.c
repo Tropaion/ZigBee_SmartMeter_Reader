@@ -69,7 +69,7 @@ static esp_err_t parse_obis(uint8_t* obis_data, size_t obis_data_size)
 static esp_err_t parse_dlms_layer(uint8_t* user_data, size_t user_data_size, uint8_t* decrypted_data, size_t* decrypted_data_size, const uint8_t* gue_key)
 {
     /* Encrypted data buffer */
-    uint8_t encrypted_data[DATA_BUFFER_SIZE];
+    static uint8_t encrypted_data[DATA_BUFFER_SIZE];
     uint16_t encrypted_data_size = 0;
 
     /* ===== GET RELEVANT DATA AND COMBINE FRAMES ===== */
@@ -77,7 +77,7 @@ static esp_err_t parse_dlms_layer(uint8_t* user_data, size_t user_data_size, uin
 
     /* === HANDLE FIRST FRAME OF DLMS DATA === */
     /* Check for data packet start value */
-    if((user_data[0] != DLMS_DATA_START_VAL1) || (user_data[1] != DLMS_DATA_START_VAL2))
+    if((user_data[0] != DLMS_START_VAL1) || (user_data[1] != DLMS_START_VAL2))
     {
         ESP_LOGE(TAG, "DLMS: Invalid packet start value");
         return ESP_FAIL;
@@ -113,7 +113,7 @@ static esp_err_t parse_dlms_layer(uint8_t* user_data, size_t user_data_size, uin
     for(int i = DLMS_MAX_SIZE; user_data_size > i; i += DLMS_MAX_SIZE)
     {
         /* Check for data packet start value */
-        if((user_data[i] != DLMS_DATA_START_VAL1) || (user_data[i + 1] != DLMS_DATA_START_VAL2))
+        if((user_data[i] != DLMS_START_VAL1) || (user_data[i + 1] != DLMS_START_VAL2))
         {
             ESP_LOGE(TAG, "DLMS: Invalid packet start value");
             return ESP_FAIL;
