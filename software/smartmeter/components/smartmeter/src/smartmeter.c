@@ -244,7 +244,7 @@ static void uart_event_task(void *pvParameters)
 
         /* Loop infinitely and check for event */
         /* Wait indefinitely for the first byte(s), but not more than timeout_ms for all other bytes */
-        if(xQueueReceive(uart1_queue, (void *)&event, data_received ? timeout_ticks : portMAX_DELAY))
+        while(xQueueReceive(uart1_queue, (void *)&event, data_received ? timeout_ticks : portMAX_DELAY))
         {
             /* Switch according to event type */
             switch(event.type)
@@ -305,8 +305,7 @@ static void uart_event_task(void *pvParameters)
         size_t buff1_size = 0;
 
         /* No data received within the given time UART_RX_TIMEOUT */
-        /* Check how many bytes were received */
-        
+        /* Check how many bytes were received */ 
         uart_get_buffered_data_len(UART_PORT_NUMBER, &buff0_size);
 
         /* If received bytes are more than minimum of MBUS frame */
