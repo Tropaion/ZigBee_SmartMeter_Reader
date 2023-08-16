@@ -21,10 +21,10 @@ extern "C" {
 #define UART_TX_GPIO                    23
 #define UART_BAUD_RATE                  2400
 
-/* For example the Sagemcom T210-D sends two frames every 10 seconds */
+/* For example the Sagemcom T210-D sends two frames every 5 seconds */
 /* After receiving the first byte, all bytes are collected in a buffer */
 /* If no new bytes is receive for a time of UART_RX_TIMEOUT, data will be parsed */
-#define UART_RX_TIMEOUT                 7000        /* < Time to wait before received bytes are processed */
+#define UART_RX_TIMEOUT                 1000        /* < Time to wait before received bytes are processed */
 
 /* === M-BUS PARSER CONFIGURATION === */
 #define MBUS_MAX_SIZE                   256
