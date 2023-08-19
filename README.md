@@ -8,6 +8,7 @@ THE PROJECT IS STILL WIP.
 
 # Hardware
 View the latest [PCB Interactive BOM](https://htmlpreview.github.io/?https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/hardware/bom/ibom.html).
+You can also view the latest [Schematic](https://kicanvas.org/?github=https%3A%2F%2Fgithub.com%2FTropaion%2FZigBee_SmartMeter_Reader%2Fblob%2Fmain%2Fhardware%2Fexternal_antenna%2FZBSmartMeter.kicad_sch) or [Layout](https://kicanvas.org/?github=https%3A%2F%2Fgithub.com%2FTropaion%2FZigBee_SmartMeter_Reader%2Fblob%2Fmain%2Fhardware%2Fexternal_antenna%2FZBSmartMeter.kicad_pcb)
 
 <img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/pcb.png?raw=true" width="35%" />
 <img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/pcb_real.jpg?raw=true" width="35%" />
