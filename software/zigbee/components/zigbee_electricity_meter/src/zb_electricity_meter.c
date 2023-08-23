@@ -20,8 +20,10 @@ static const char* TAG = "zb_dlms_ep";
 #define BASIC_APPLICATION_VERSION           ESP_ZB_ZCL_BASIC_APPLICATION_VERSION_DEFAULT_VALUE
 #define BASIC_STACK_VERSION                 ESP_ZB_ZCL_BASIC_STACK_VERSION_DEFAULT_VALUE
 #define BASIC_HW_VERSION                    ESP_ZB_ZCL_BASIC_HW_VERSION_DEFAULT_VALUE
-#define BASIC_MANUFACTURER_NAME             " github.com/Tropaion"
-#define BASIC_MODEL_NAME                    " SmartMeter"
+#define BASIC_MANUFACTURER_NAME             " github.com/Tropaion"  /* < Reserve first char for the size of string */
+#define BASIC_MANUFACTURER_NAME_SIZE        0x13                    /* < Size of BASIC_MANUFACTURER_NAME without first space */
+#define BASIC_MODEL_NAME                    " SmartMeter"           /* < Reserve first char for the size of string */
+#define BASIC_MODEL_NAME_SIZE               0x0A                    /* < Size of BASIC_MODEL_NAME_SIZE without first space */
 #define BASIC_POWER_SOURCE                  0x04                    /* < DC Power Source */
 
 /* Values for identify cluster */
@@ -177,11 +179,13 @@ void zb_electricity_meter_ep(esp_zb_ep_list_t *esp_zb_ep_list)
     ESP_ERROR_CHECK(esp_zb_basic_cluster_add_attr(esp_zb_basic_cluster, ESP_ZB_ZCL_ATTR_BASIC_HW_VERSION_ID, &hw_version));
 
     /* Add attribute manufacturer_name (0x0004) */
-    char manufacturer_name[] = BASIC_MANUFACTURER_NAME;
+    char manufacturer_name[BASIC_MANUFACTURER_NAME_SIZE + 1] = BASIC_MANUFACTURER_NAME;
+    manufacturer_name[0] = BASIC_MANUFACTURER_NAME_SIZE;
     ESP_ERROR_CHECK(esp_zb_basic_cluster_add_attr(esp_zb_basic_cluster, ESP_ZB_ZCL_ATTR_BASIC_MANUFACTURER_NAME_ID, &manufacturer_name[0]));
 
     /* Add attribute model_identifier (0x0005) */
-    char model_identifier[] = BASIC_MODEL_NAME;
+    char model_identifier[BASIC_MODEL_NAME_SIZE + 1] = BASIC_MODEL_NAME;
+    model_identifier[0] = BASIC_MODEL_NAME_SIZE;
     ESP_ERROR_CHECK(esp_zb_basic_cluster_add_attr(esp_zb_basic_cluster, ESP_ZB_ZCL_ATTR_BASIC_MODEL_IDENTIFIER_ID, &model_identifier[0]));
 
     /* Add attribute power_source (0x0007) */
@@ -198,34 +202,42 @@ void zb_electricity_meter_ep(esp_zb_ep_list_t *esp_zb_ep_list)
     /* ===== CREATE ELECTRICAL MEASUREMENT CLUSTER (0x0B04)=====*/
     esp_zb_attribute_list_t *esp_zb_electrical_measurement_cluster = esp_zb_zcl_attr_list_create(ESP_ZB_ZCL_CLUSTER_ID_ELECTRICAL_MEASUREMENT);
 
+    /* == Attribute Set 0x00: Basic Information (S. 299) == */
+    //TODO: Add attribute MeasurementType (0x0000) */
+    uint32_t measurement_type = 0xFFFFFFFF; //((1 << 3) | (1 << 4) | (1 << 5));
+    ESP_ERROR_CHECK(esp_zb_electrical_meas_cluster_add_attr(esp_zb_electrical_measurement_cluster, ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_MEASUREMENT_TYPE_ID, &measurement_type));
+
     /* == Attribute Set 0x03: AC (Non-phase Specific) Measurements (S. 303) == */
     /* Add attribute TotalActivePower (0x0304) */
-    //TODO: Test if there is a difference between static and non-static
-    int32_t electrical_power = 0;
-    ESP_ERROR_CHECK(esp_zb_electrical_meas_cluster_add_attr(esp_zb_electrical_measurement_cluster, ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_TOTAL_ACTIVE_POWER_ID, &electrical_power));
+    int32_t total_active_power = 0;
+    ESP_ERROR_CHECK(esp_zb_electrical_meas_cluster_add_attr(esp_zb_electrical_measurement_cluster, ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_TOTAL_ACTIVE_POWER_ID, &total_active_power));
 
     /* == Attribute Set 0x05: AC (Single Phase or Phase A) Measurements (S. 306) == */
     /* Add attribute RMSVoltage Phase A (0x0505)*/
-    uint16_t rms_voltage = ELECTRICAL_MEASUREMENT_RMS_VOLTAGE;
-    ESP_ERROR_CHECK(esp_zb_electrical_meas_cluster_add_attr(esp_zb_electrical_measurement_cluster, ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_RMSVOLTAGE_ID, &rms_voltage));
+    uint16_t rms_voltage_phase_a = ELECTRICAL_MEASUREMENT_RMS_VOLTAGE;
+    ESP_ERROR_CHECK(esp_zb_electrical_meas_cluster_add_attr(esp_zb_electrical_measurement_cluster, ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_RMSVOLTAGE_ID, &rms_voltage_phase_a));
 
     /* Add attribute RMSCurrent Phase A (0x0508) */
-    uint16_t rms_current = ELECTRICAL_MEASUREMENT_RMS_CURRENT;
-    ESP_ERROR_CHECK(esp_zb_electrical_meas_cluster_add_attr(esp_zb_electrical_measurement_cluster, ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_RMSCURRENT_ID, &rms_current));
+    uint16_t rms_current_phase_a = ELECTRICAL_MEASUREMENT_RMS_CURRENT;
+    ESP_ERROR_CHECK(esp_zb_electrical_meas_cluster_add_attr(esp_zb_electrical_measurement_cluster, ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_RMSCURRENT_ID, &rms_current_phase_a));
 
     /* == Attribute Set 0x09: AC Phase B Measurements (S. 313) == */
     /* Add attribute RMSVoltage Phase B (0x0905)*/
-    ESP_ERROR_CHECK(esp_zb_electrical_meas_cluster_add_attr(esp_zb_electrical_measurement_cluster, ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_RMSVOLTAGE_PHB_ID, &rms_voltage));
+    uint16_t rms_voltage_phase_b = ELECTRICAL_MEASUREMENT_RMS_VOLTAGE;
+    ESP_ERROR_CHECK(esp_zb_electrical_meas_cluster_add_attr(esp_zb_electrical_measurement_cluster, ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_RMSVOLTAGE_PHB_ID, &rms_voltage_phase_b));
 
     /* Add attribute RMSCurrent Phase B (0x0908) */
-    ESP_ERROR_CHECK(esp_zb_electrical_meas_cluster_add_attr(esp_zb_electrical_measurement_cluster, ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_RMSCURRENT_PHB_ID, &rms_current));
+    uint16_t rms_current_phase_b = ELECTRICAL_MEASUREMENT_RMS_CURRENT;
+    ESP_ERROR_CHECK(esp_zb_electrical_meas_cluster_add_attr(esp_zb_electrical_measurement_cluster, ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_RMSCURRENT_PHB_ID, &rms_current_phase_b));
 
     /* == Attribute Set 0x0A: AC Phase C Measurements == */
     /* Add attribute RMSVoltage Phase C (0x0A05)*/
-    ESP_ERROR_CHECK(esp_zb_electrical_meas_cluster_add_attr(esp_zb_electrical_measurement_cluster, ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_RMSVOLTAGE_PHC_ID, &rms_voltage));
+    uint16_t rms_voltage_phase_c = ELECTRICAL_MEASUREMENT_RMS_VOLTAGE;
+    ESP_ERROR_CHECK(esp_zb_electrical_meas_cluster_add_attr(esp_zb_electrical_measurement_cluster, ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_RMSVOLTAGE_PHC_ID, &rms_voltage_phase_c));
 
     /* Add attribute RMSCurrent Phase C (0x0A08) */
-    ESP_ERROR_CHECK(esp_zb_electrical_meas_cluster_add_attr(esp_zb_electrical_measurement_cluster, ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_RMSCURRENT_PHC_ID, &rms_current));
+    uint16_t rms_current_phase_c = ELECTRICAL_MEASUREMENT_RMS_CURRENT;
+    ESP_ERROR_CHECK(esp_zb_electrical_meas_cluster_add_attr(esp_zb_electrical_measurement_cluster, ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_RMSCURRENT_PHC_ID, &rms_current_phase_c));
     
     /* === CREATE METERING CLUSTER (0x0702) === */
     //TODO: Cluster still not implemented in ZigBee SDK: https://github.com/espressif/esp-zigbee-sdk/issues/36

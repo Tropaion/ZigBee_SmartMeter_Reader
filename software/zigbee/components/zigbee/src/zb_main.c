@@ -19,6 +19,7 @@ static const char* TAG = "zb_main";
 
 /* Endpoint for electricity meter */
 #include "zb_electricity_meter_endpoint.h"
+#include "zb_electricity_meter_update.h"
 
 /* Zigbee libraries */
 #include "ha/esp_zigbee_ha_standard.h"
@@ -40,12 +41,15 @@ static void zb_reset_button_cb(void *button_handle, void *usr_data)
 {
     ESP_LOGI(TAG, "Reset initiated by button press");
 
+    zb_update_voltage(PhaseB, 2000);
+    zb_update_total_active_power(10000);
+
     /* Start led indication */
-    led_animation_start(BLINK_RESET);
-    vTaskDelay(RESET_BUTTON_ANIMATION_TIME_MS / portTICK_PERIOD_MS);
+    //led_animation_start(BLINK_RESET);
+    //vTaskDelay(RESET_BUTTON_ANIMATION_TIME_MS / portTICK_PERIOD_MS);
 
     /* Factoy reset */
-    esp_zb_factory_reset();
+    //esp_zb_factory_reset();
 }
 
 static void bdb_start_top_level_commissioning_cb(uint8_t mode_mask)
