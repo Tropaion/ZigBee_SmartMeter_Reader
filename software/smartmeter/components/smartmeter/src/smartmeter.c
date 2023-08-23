@@ -234,6 +234,9 @@ static void uart_event_task(void *pvParameters)
     /* Second buffer for processing data */
     static uint8_t buff1[DATA_BUFFER_SIZE];
 
+    /* Current measurement interval */
+    static uint8_t curr_interval = DATA_UPDATE_INTERVAL;
+
     /* Ticks to wait before received bytes are processed */
     const TickType_t timeout_ticks = UART_RX_TIMEOUT / portTICK_PERIOD_MS;
 
@@ -300,16 +303,19 @@ static void uart_event_task(void *pvParameters)
             }
         }
 
+        /* Increment measurement interval */
+        curr_interval++;
+
         /* Set buffer sizes */
         size_t buff0_size = 0;
         size_t buff1_size = 0;
 
-        /* No data received within the given time UART_RX_TIMEOUT */
+        /* No new data received within the given time UART_RX_TIMEOUT */
         /* Check how many bytes were received */ 
         uart_get_buffered_data_len(UART_PORT_NUMBER, &buff0_size);
 
-        /* If received bytes are more than minimum of MBUS frame */
-        if(buff0_size >= (MBUS_HEADER_LENGTH + MBUS_FOOTER_LENGTH))
+        /* Check if received bytes are more than minimum of MBUS frame and if a new measurement should be made */
+        if(buff0_size >= (MBUS_HEADER_LENGTH + MBUS_FOOTER_LENGTH) && curr_interval >= DATA_UPDATE_INTERVAL)
         {
             /* Write bytes to buffer0 */
             uart_read_bytes(UART_PORT_NUMBER, &buff0, buff0_size, portMAX_DELAY);
@@ -349,6 +355,11 @@ static void uart_event_task(void *pvParameters)
 
                 /* Reset event queue */
                 xQueueReset(uart1_queue);
+            }
+            else
+            {
+                /* Measurement successfull, reset interval */
+                curr_interval = 0;
             }
         }
     }
