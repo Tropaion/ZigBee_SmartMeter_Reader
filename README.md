@@ -34,7 +34,7 @@ Each will be individually tested and then combined.
 - [ ] smartmeter - read data via uart, parse layers and decrypt data
 
 Possible additional functionalities:
-- [ ] zigbee ota - updating firmware via zigbee
+- [ ] zigbee_ota - updating firmware via zigbee
 - [ ] configuration_console - usb console to configure device (decryption key)
 
 OR
