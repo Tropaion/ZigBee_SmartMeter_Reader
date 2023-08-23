@@ -30,7 +30,7 @@ This key has to be configured in the software. The current plan for this is to p
 The software will be separated into three core components/libraries.
 Each will be individually tested and then combined.
 - [x] human_interface - handle button input and led (working)
-- [x] zigbee - handle everything only zigbee related
+- [x] zigbee - handle zigbee basic functions
 - [x] zigbee_electricity_meter - handle everything zigbee and electricity meter related (cluster)
 - [ ] smartmeter - read data via uart, parse layers and decrypt data
 
