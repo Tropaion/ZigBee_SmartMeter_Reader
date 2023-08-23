@@ -1,5 +1,5 @@
 /**
- * @file zb_endpoint.h
+ * @file zb_electricity_meter_endpoint.h
  * 
  * @copyright Copyright (c) 2023
  * 
@@ -19,9 +19,9 @@ extern "C" {
 #define HA_DLMS_ENDPOINT    	            1
 
 /**
- * @brief Create endpoint for dlms
+ * @brief Create endpoint for electricity meter
  */
-void zb_dlms_ep(esp_zb_ep_list_t *esp_zb_ep_list);
+void zb_electricity_meter_ep(esp_zb_ep_list_t *esp_zb_ep_list);
 
 #ifdef __cplusplus
 }

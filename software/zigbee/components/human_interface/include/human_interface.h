@@ -15,8 +15,8 @@ extern "C" {
 #include "esp_check.h"
 
 /* ===== BUTTON CONFIGURATION ===== */
-#define BUTTON_GPIO_NUM                 0
-#define BUTTON_LONG_PRESS_TIME_MS       3000
+#define BTTN_GPIO_NUM                 0
+#define BTTN_LONG_PRESS_TIME_MS       3000
 
 typedef void (* bttn_cb_t)(void *button_handle, void *usr_data);
 
@@ -29,7 +29,7 @@ typedef enum {
     BLINK_RESET,
     BLINK_COUPLING,
     BLINK_SENDING_DATA,
-    BLINK_START_UP,
+    BLINK_START_UP
 } led_blink_type_t;
 
 /* ===== BUTTON FUNCTIONS ===== */

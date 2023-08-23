@@ -12,7 +12,8 @@
 static const char* TAG = "zb_dlms_ep";
 
 /* Header */
-#include "zb_endpoint.h"
+#include "zb_electricity_meter_endpoint.h"
+#include "zb_electricity_meter_update.h"
 
 /* Values for basic cluster */
 #define BASIC_ZCL_VERSION                   ESP_ZB_ZCL_BASIC_ZCL_VERSION_DEFAULT_VALUE
@@ -21,19 +22,140 @@ static const char* TAG = "zb_dlms_ep";
 #define BASIC_HW_VERSION                    ESP_ZB_ZCL_BASIC_HW_VERSION_DEFAULT_VALUE
 #define BASIC_MANUFACTURER_NAME             " github.com/Tropaion"
 #define BASIC_MODEL_NAME                    " SmartMeter"
-#define BASIC_POWER_SOURCE                  ESP_ZB_ZCL_BASIC_POWER_SOURCE_DEFAULT_VALUE
+#define BASIC_POWER_SOURCE                  0x04                    /* < DC Power Source */
 
 /* Values for identify cluster */
 #define IDENTIFY_IDENTIFY_TIME              ESP_ZB_ZCL_IDENTIFY_IDENTIFY_TIME_DEFAULT_VALUE
 
 /* Values for electrical measurement cluster */
-#define ELECTRICAL_MEASUREMENT_RMS_VOLTAGE  0xFFFF
-#define ELECTRICAL_MEASUREMENT_RMS_CURRENT  0xFFFF
+#define ELECTRICAL_MEASUREMENT_RMS_VOLTAGE  0xFFFF                  /* < Default value from specification */
+#define ELECTRICAL_MEASUREMENT_RMS_CURRENT  0xFFFF                  /* < Default value from specification */
 
-/**
- * @brief Create endpoint for dlms
- */
-void zb_dlms_ep(esp_zb_ep_list_t *esp_zb_ep_list)
+/* Initial command to request attribute report */
+static esp_zb_zcl_report_attr_cmd_t electrical_measurement_cmd_req = {
+        .zcl_basic_cmd.src_endpoint = HA_DLMS_ENDPOINT,
+        .address_mode = ESP_ZB_APS_ADDR_MODE_DST_ADDR_ENDP_NOT_PRESENT,
+        .clusterID = ESP_ZB_ZCL_CLUSTER_ID_ELECTRICAL_MEASUREMENT,
+        .cluster_role = ESP_ZB_ZCL_CLUSTER_SERVER_ROLE
+    };
+
+/* ===== FUNCTIONS TO UPDATE AND SEND CLUSTER VALUES ===== */
+esp_err_t zb_update_total_active_power(int32_t power)
+{
+    /* Set attribute request to total active power */
+    electrical_measurement_cmd_req.attributeID = ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_TOTAL_ACTIVE_POWER_ID;
+
+    /* Write new local total active power */
+    esp_zb_zcl_status_t state = esp_zb_zcl_set_attribute_val(HA_DLMS_ENDPOINT, ESP_ZB_ZCL_CLUSTER_ID_ELECTRICAL_MEASUREMENT, ESP_ZB_ZCL_CLUSTER_SERVER_ROLE, ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_TOTAL_ACTIVE_POWER_ID, &power, false);
+    
+    /* Check for error */
+    if(state != ESP_ZB_ZCL_STATUS_SUCCESS)
+    {
+        ESP_LOGE(TAG, "Setting total active power attribute failed!");
+        return ESP_FAIL;
+    }
+
+    /* Request sending new total active power */
+    state = esp_zb_zcl_report_attr_cmd_req(&electrical_measurement_cmd_req);
+
+    /* Check for error */
+    if(state != ESP_ZB_ZCL_STATUS_SUCCESS)
+    {
+        ESP_LOGE(TAG, "Sending total active power attribute report command failed!");
+        return ESP_FAIL;
+    }
+    
+    return ESP_OK;
+}
+
+esp_err_t zb_update_voltage(phase_t phase, int16_t voltage)
+{
+    /* Check on which phase to send */
+    switch(phase)
+    {
+        case PhaseA:
+            /* Set attribute request to PhaseA */
+            electrical_measurement_cmd_req.attributeID = ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_RMSVOLTAGE_ID;
+            break;
+        case PhaseB:
+            /* Set attribute request to PhaseA */
+            electrical_measurement_cmd_req.attributeID = ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_RMSVOLTAGE_PHB_ID;
+            break;
+        case PhaseC:
+            /* Set attribute request to PhaseA */
+            electrical_measurement_cmd_req.attributeID = ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_RMSVOLTAGE_PHC_ID;
+            break;
+        default:
+            ESP_LOGE(TAG, "Update request on invalid phase");
+    }
+
+    /* Write new local phase voltage */
+    esp_zb_zcl_status_t state = esp_zb_zcl_set_attribute_val(HA_DLMS_ENDPOINT, ESP_ZB_ZCL_CLUSTER_ID_ELECTRICAL_MEASUREMENT, ESP_ZB_ZCL_CLUSTER_SERVER_ROLE, electrical_measurement_cmd_req.attributeID, &voltage, false);
+    
+    /* Check for error */
+    if(state != ESP_ZB_ZCL_STATUS_SUCCESS) {
+        ESP_LOGE(TAG, "Setting voltage attribute failed!");
+        return ESP_FAIL;
+    }
+
+    /* Request sending new phase voltage */
+    state = esp_zb_zcl_report_attr_cmd_req(&electrical_measurement_cmd_req);
+
+    /* Check for error */
+    if(state != ESP_ZB_ZCL_STATUS_SUCCESS) {
+        ESP_LOGE(TAG, "Sending voltage attribute report command failed!");
+        return ESP_FAIL;
+    }
+
+    return ESP_OK;
+}
+    
+esp_err_t zb_update_current(phase_t phase, int16_t current)
+{
+    /* Check on which phase to send */
+    switch(phase)
+    {
+        case PhaseA:
+            /* Set attribute request to PhaseA */
+            electrical_measurement_cmd_req.attributeID = ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_RMSCURRENT_ID;
+            break;
+        case PhaseB:
+            /* Set attribute request to PhaseA */
+            electrical_measurement_cmd_req.attributeID = ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_RMSCURRENT_PHB_ID;
+            break;
+        case PhaseC:
+            /* Set attribute request to PhaseA */
+            electrical_measurement_cmd_req.attributeID = ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_RMSCURRENT_PHC_ID;
+            break;
+        default:
+            ESP_LOGE(TAG, "Update request on invalid phase");
+    }
+
+    /* Write new local phase voltage */
+    esp_zb_zcl_status_t state = esp_zb_zcl_set_attribute_val(HA_DLMS_ENDPOINT, ESP_ZB_ZCL_CLUSTER_ID_ELECTRICAL_MEASUREMENT, ESP_ZB_ZCL_CLUSTER_SERVER_ROLE, electrical_measurement_cmd_req.attributeID, &current, false);
+    
+    /* Check for error */
+    if(state != ESP_ZB_ZCL_STATUS_SUCCESS) {
+        ESP_LOGE(TAG, "Setting current attribute failed!");
+        return ESP_FAIL;
+    }
+
+    /* Request sending new phase voltage */
+    state = esp_zb_zcl_report_attr_cmd_req(&electrical_measurement_cmd_req);
+
+    /* Check for error */
+    if(state != ESP_ZB_ZCL_STATUS_SUCCESS) {
+        ESP_LOGE(TAG, "Sending current attribute report command failed!");
+        return ESP_FAIL;   
+    }
+
+    return ESP_OK;
+}
+
+//TODO: Identify Callback
+/* ===== FUNCTION TO CREATE ENDPOINTS ===== */
+// Create endpoint for electricity meter
+void zb_electricity_meter_ep(esp_zb_ep_list_t *esp_zb_ep_list)
 {
     /* ===== CREATE BASIC CLUSTER (REQUIRED) (0x0000) ===== */
     esp_zb_attribute_list_t *esp_zb_basic_cluster = esp_zb_zcl_attr_list_create(ESP_ZB_ZCL_CLUSTER_ID_BASIC);
@@ -76,10 +198,9 @@ void zb_dlms_ep(esp_zb_ep_list_t *esp_zb_ep_list)
     /* ===== CREATE ELECTRICAL MEASUREMENT CLUSTER (0x0B04)=====*/
     esp_zb_attribute_list_t *esp_zb_electrical_measurement_cluster = esp_zb_zcl_attr_list_create(ESP_ZB_ZCL_CLUSTER_ID_ELECTRICAL_MEASUREMENT);
 
-    //TODO: Add Configuration attribute
-
     /* == Attribute Set 0x03: AC (Non-phase Specific) Measurements (S. 303) == */
     /* Add attribute TotalActivePower (0x0304) */
+    //TODO: Test if there is a difference between static and non-static
     int32_t electrical_power = 0;
     ESP_ERROR_CHECK(esp_zb_electrical_meas_cluster_add_attr(esp_zb_electrical_measurement_cluster, ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_TOTAL_ACTIVE_POWER_ID, &electrical_power));
 
@@ -106,8 +227,8 @@ void zb_dlms_ep(esp_zb_ep_list_t *esp_zb_ep_list)
     /* Add attribute RMSCurrent Phase C (0x0A08) */
     ESP_ERROR_CHECK(esp_zb_electrical_meas_cluster_add_attr(esp_zb_electrical_measurement_cluster, ESP_ZB_ZCL_ATTR_ELECTRICAL_MEASUREMENT_RMSCURRENT_PHC_ID, &rms_current));
     
-    /* === TODO: CREATE METERING CLUSTER (0x0702) === */
-    // Cluster still not implemented in ZigBee SDK
+    /* === CREATE METERING CLUSTER (0x0702) === */
+    //TODO: Cluster still not implemented in ZigBee SDK: https://github.com/espressif/esp-zigbee-sdk/issues/36
 
     /* === CREATE CLUSTER CLIENT ROLES === */
     esp_zb_attribute_list_t *esp_zb_identify_client_cluster = esp_zb_zcl_attr_list_create(ESP_ZB_ZCL_CLUSTER_ID_IDENTIFY);

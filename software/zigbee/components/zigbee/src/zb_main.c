@@ -17,8 +17,10 @@ static const char* TAG = "zb_main";
 /* Human Interface Library */
 #include "human_interface.h"
 
+/* Endpoint for electricity meter */
+#include "zb_electricity_meter_endpoint.h"
+
 /* Zigbee libraries */
-#include "zb_endpoint.h"
 #include "ha/esp_zigbee_ha_standard.h"
 #include "nvs_flash.h"
 
@@ -46,6 +48,12 @@ static void zb_reset_button_cb(void *button_handle, void *usr_data)
     esp_zb_factory_reset();
 }
 
+static void bdb_start_top_level_commissioning_cb(uint8_t mode_mask)
+{
+    ESP_ERROR_CHECK(esp_zb_bdb_start_top_level_commissioning(mode_mask));
+}
+
+/* ===== MAIN FUNCTIONS ===== */
 /**
  * @brief Handles state signal, for example if stack is initialized or network steering is done
  * 
@@ -110,7 +118,7 @@ void esp_zb_app_signal_handler(esp_zb_app_signal_t *signal_struct)
                 ESP_LOGI(TAG, "Network steering was not successful (status: %d)", err_status);
 
                 /* Try joining again after 1s */
-                esp_zb_scheduler_alarm((esp_zb_callback_t)esp_zb_bdb_start_top_level_commissioning, ESP_ZB_BDB_MODE_NETWORK_STEERING, 1000);
+                esp_zb_scheduler_alarm((esp_zb_callback_t)bdb_start_top_level_commissioning_cb, ESP_ZB_BDB_MODE_NETWORK_STEERING, 1000);
             }
             break;
 
@@ -138,7 +146,6 @@ void esp_zb_app_signal_handler(esp_zb_app_signal_t *signal_struct)
     }
 }
 
-/* ===== MAIN FUNCTIONS ===== */
 /**
  * @brief Zigbee configuration is loaded and stack runs in loop
  * 
@@ -154,7 +161,7 @@ static void zb_task(void *pvParameters)
     esp_zb_ep_list_t *esp_zb_ep_list = esp_zb_ep_list_create();
 
     /* Create endpoint */
-    zb_dlms_ep(esp_zb_ep_list);
+    zb_electricity_meter_ep(esp_zb_ep_list);
 
     /* Register endpoint list to stack */
     esp_zb_device_register(esp_zb_ep_list);

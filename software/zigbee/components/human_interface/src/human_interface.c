@@ -29,9 +29,9 @@ esp_err_t button_init(bttn_cb_t button_cb)
     /* Configuration */
     button_config_t button_config = {
         .type = BUTTON_TYPE_GPIO,
-        .long_press_time = BUTTON_LONG_PRESS_TIME_MS,
+        .long_press_time = BTTN_LONG_PRESS_TIME_MS,
         .gpio_button_config = {
-            .gpio_num = BUTTON_GPIO_NUM,
+            .gpio_num = BTTN_GPIO_NUM,
             .active_level = 0,
         },
     };
