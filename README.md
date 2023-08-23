@@ -27,13 +27,16 @@ Since most smartmeters send encrypted data, for which you need to request an dec
 This key has to be configured in the software. The current plan for this is to provide a simple configuration terminal which is accessible via the USB-C-Socket.
 
 # Software
-The software will be separated into four components/libraries.
+The software will be separated into three core components/libraries.
 Each will be individually tested and then combined.
-
-- [ ] configuration_console - usb console to configure device (decryption key)
 - [x] human_interface - handle button input and led (working)
-- [ ] zigbee - handle everything zigbee related
+- [x] zigbee - handle everything zigbee related
 - [ ] smartmeter - read data via uart, parse layers and decrypt data
+Possible additional functionalities
+- [ ] zigbee ota - updating firmware via zigbee
+- [ ] configuration_console - usb console to configure device (decryption key)
+OR
+- [ ] zigbee custom configuration cluster - cluster configure device (decryption key)
 
 ## Structure of SmartMeter data
 How the data is handled is a bit complicated and consists of three layers:
