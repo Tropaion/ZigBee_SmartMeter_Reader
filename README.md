@@ -32,9 +32,11 @@ Each will be individually tested and then combined.
 - [x] human_interface - handle button input and led (working)
 - [x] zigbee - handle everything zigbee related
 - [ ] smartmeter - read data via uart, parse layers and decrypt data
-Possible additional functionalities
+
+Possible additional functionalities:
 - [ ] zigbee ota - updating firmware via zigbee
 - [ ] configuration_console - usb console to configure device (decryption key)
+
 OR
 - [ ] zigbee custom configuration cluster - cluster configure device (decryption key)
 
