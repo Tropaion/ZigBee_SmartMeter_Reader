@@ -12,18 +12,19 @@
 extern "C" {
 #endif
 
+/* ===== FOR OBIS HEADER ===== */
+#define OBIS_HEADER_START                           0x0F    /* < First byte, check if this is long invoke type */
+#define OBIS_HEADER_LONG_INVOKE_ID_PRIO_BYTES       4       /* < Length of <LongInvokeIdAndPriority> */
+
 /* ===== FOR DATA INTEGRITY CHECK ===== */
 /* Not sure about the meaning of these values, but they are always the same */
 #define OBIS_INTEGRITY_VAL1_OFFSET      0       /* < Position of first value, which is always the same */
 #define OBIS_INTEGRITY_VAL1             0x0F    /* < Value of first integrity check */
 
-#define OBIS_INTEGRITY_VAL2_OFFSET      5       /* < Position of second value, which is always the same */
-#define OBIS_INTEGRITY_VAL2             0x0C    /* < Value of second integrity check */
-
 /* ===== DATA STRUCTURE ===== */
-#define OBIS_DECODER_START_OFFSET = 20;         /* < Offset for start of OBIS decoding, skip header, timestamp and break block */
+#define OBIS_DECODER_START_OFFSET = 20;         /* < Offset for starting OBIS decoding, skip header, timestamp and break block */
 
-#define OBIS_TYPE_OFFSET = 0;
+#define OBIS_TYPE_OFFSET = 0;                   /* < Offset for data type in header (only OctetString supported)*/
 #define OBIS_LENGTH_OFFSET = 1;
 
 #define OBIS_CODE_OFFSET = 2;
@@ -35,9 +36,11 @@ extern "C" {
 #define OBIS_E = 4;
 #define OBIS_F = 5;
 
-/* ===== DEFINITIONS ACCORDING TO SPECIFICATION ===== */
-/* === Data Types as per specification === */
-enum DataType
+/* === OBIS DATA TYPES === */
+#define OBIS_DATE_TIME_LENGTH           0x0C    /* < Length of a date time octet string */
+#define OBIS_CODE_LENGTH                0x06    /* < Length of obis code, which specifies the interpretation of data */
+
+enum OBISDataType
 {
     NullData = 0x00,
     Boolean = 0x03,

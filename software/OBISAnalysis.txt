@@ -1,13 +1,68 @@
-E (32854) smartmeter: MBUS: Invalid start bytes!
-Decrypted data size: 283
-E068FAFA6853FF000167DB085341475905EAB33D81F820007B7DD032EBF91F20CF6990A94953D4C7A79117ACF7036D9AE22C2C88B4A54F895429914D72626E0568DC8439628353093A4AC10B205A52EA418D04CAD61EE382EC378C18E8C90E1A6CAB39BA801B423C2BB247B3C2B5EEFDFF78A0577609AE1B0B9770E2EC387A3A0290D8EFF421A2664CFABB5B93D4FF810BB2AE4493B4282427A742313D2170FB46D8120B77443BA5E9460B500555353B7A64C872DD762B73318CE0945B7F232C4F672424E09272A8DF932D464A1FE7494E9ED07D06D4C4972D5FDFCCFF53477537CBF147BB0286CE8E1321F6C6FDFF9DA6C3AE54CDAD2A3340CD5CDDC72B48CB166814146853FF110167217EB857B415145490CD60873912AFE816
-E (32894) smartmeter: UART: Parsing failed.
 Decrypted data size: 243
-0F801BF7800C07E708100311131E00FF88820223090C07E708100311131E00FF888209060100010800FF060089623602020F00161E09060100020800FF060000005002020F00161E09060100010700FF06000007D902020F00161B09060100020700FF060000000002020F00161B09060100200700FF12090902020FFF162309060100340700FF1208FD02020FFF162309060100480700FF12090A02020FFF1623090601001F0700FF12005002020FFE162109060100330700FF12012D02020FFE162109060100470700FF12010802020FFE1621090601000D0700FF1203A802020FFD16FF090C313738323130323637333839
+0F            < immer gleich
+801BF780      < LongInvokeIdAndPriority?? < ignored
+0C                          < immer gleich
+07E708100311131E00FF8882    < DateTime < ignored
+02 23                       < An array with 35 elements
+  	09                          < Obis data type 0x09 = OctetString
+  	0C                          < length of string in bytes (12)
+  	07E708100311131E00FF8882    < DateTime
+  	09                          < Obis data type 0x09 = OctetString -> if it is OctetString THEN FOLLOWING BYTE INDICATES LENGTH OF STRING
+  	06                          < length of string in bytes (6)
+  	0100010800FF                < OctetString data with 6 bytes -> OBIS KENNZAHLEN (HAN): https://www.nek.no/wp-content/uploads/2018/11/Kaifa-KFM_001.pdf https://de.wikipedia.org/wiki/OBIS-Kennzahlen
+  	06                          < Obis data type 0x09 = DoubleLongUnsigned
+  	00896236                    
+  	02 02                       < An array with 2 elements
+  	  0F                          < data type int8
+  	  00                          < int8 value (0)
+  	  16                          < data typ enum
+  	  1E                          < enum value
+  	09060100020800FF060000005002020F00161E09060100010700FF06000007D902020F00161B09060100020700FF060000000002020F00161B09060100200700FF12090902020FFF162309060100340700FF1208FD02020FFF162309060100480700FF12090A02020FFF1623090601001F0700FF12005002020FFE162109060100330700FF12012D02020FFE162109060100470700FF12010802020FFE1621090601000D0700FF1203A802020FFD16FF090C313738323130323637333839
+
+Ablauf:
+1. Check Header <DataNotification>
+2. Check for Structure or Array and their size and loop through it
+3. Check each value, if it's timestamp (12 Bytes), ignore it, if its an OBIS Kennzahl save it
+4. Save data and data type
+5. Step 3
+6. Send saved values with zigbee
+
+IDEE: OBIS KENNZAHL NUR SPEICHERN, ERST BEIM ZIGBEE SENDEN AUSWERTEN -> UNIVERSELLER
+Also Daten so speichern:
+struct{
+  kennzahl = 
+  data = 
+  next =
+}
+Problem: Verschiedenen Datentypen? Es kommt uint8, 16 und 32 vor? Evtl. alles als 32 abspeichern?
+
+parse_obis_header
+
+General structure except parse_obis_data
+parse_obis_structure
+
+If octet string = 6 byte + strukture with size 2:
+parse_obis_data
+
+OBIS Datenstrukturen:
+0x02 + 0x?? -> An struct with ?? elements
+0x01 + 0x?? -> An array with ?? elements
+
+
+Allgemeine Obis Struktur:
+<DataNotification>              = 0x0F
+  <LongInvokeIdAndPriority>     = 4 Byte
+  <????>                        = 0x0C
+  <DateTime>                    = 12 Byte
+  <NotificationBody><DataValue> = 0x02
+    <Structure Qty="??">        = 1 Byte -> in diesem Fall 0x23 = 35 -> gibt ?? Länge an
+
+
+
 <DataNotification>
   <!-- High priority. -->
   <!-- Invoke ID: 1832832 -->
-  <LongInvokeIdAndPriority Value="801BF780" />
+  <LongInvoke IdAndPriority Value="801BF780" />
   <!-- 16.08.2023 17:19:30 -->
   <DateTime Value="07E708100311131E00FF8882" />
   <NotificationBody>
