@@ -1,5 +1,5 @@
 /**
- * @file dlms.h
+ * @file mbus.h
  * 
  * @copyright Copyright (c) 2023
  * 
@@ -12,19 +12,7 @@
 extern "C" {
 #endif
 
-/* ===== MBUS CHIP CONFIGURATION ===== */
-#define POWER_FAIL_SIGNAL_GPIO          21          /* < GPIO Pin where MBUS-to-UART-Converter indicates power fail */
-
-/* ===== UART CONFIGURATION ===== */
-#define UART_PORT_NUMBER                UART_NUM_1  /* < UART Port from which data is read */
-#define UART_RX_GPIO                    22          /* < GPIO Pin where UART receives data */
-#define UART_TX_GPIO                    23          /* < GPIO Pin where UART sends data (unused) */
-#define UART_BAUD_RATE                  2400        /* < Baudrate of the connected meter */
-
-/* For example the Sagemcom T210-D sends two frames every 5 seconds */
-/* After receiving the first byte, all bytes are collected in a buffer */
-/* If no new bytes is receive for a time of UART_RX_TIMEOUT, data will be parsed */
-#define UART_RX_TIMEOUT                 1000        /* < Time to wait before received bytes are processed */
+#include "esp_check.h"
 
 /* === M-BUS PARSER CONFIGURATION === */
 #define MBUS_MAX_SIZE                   256         /* < Maximum size of an MBUS frame */
@@ -44,6 +32,16 @@ extern "C" {
 
 #define MBUS_STOP_OFFSET                2           /* < Offset added to the position of last data byte */
 #define MBUS_STOP_VALUE                 0x16        /* < Value of MBUS stop indicator */
+
+/**
+ * @brief Parser for MBUS-Layer, only long frames!
+ * 
+ * @param payload data from physical layer
+ * @param payload_size size of data from physical layer
+ * @param user_data extracted user data
+ * @param user_data_size size of extracted user data
+ */
+esp_err_t parse_mbus_long_frame_layer(uint8_t* payload, size_t payload_size, uint8_t* user_data, size_t* user_data_size);
 
 #ifdef __cplusplus
 } // extern "C"

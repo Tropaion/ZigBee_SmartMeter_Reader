@@ -12,6 +12,8 @@
 extern "C" {
 #endif
 
+#include "esp_check.h"
+
 /* ===== DLMS PARSER CONFIGURATION ===== */
 /* == INFO: OFFSETS ARE ALWAYS CALCULATED FROM THE BEGINNING OF THE RELEVANT LAYER == */
 #define DLMS_MAX_SIZE                   247         /* < Maximum size of one dlms frame = (MBUS_MAX_SIZE - MBUS_HEADER_LENGTH - MBUS_FOOTER_LENGTH) */
@@ -36,13 +38,20 @@ extern "C" {
 #define DLMS_DATA_START_OFFSET          2           /* < Offset where user data begins when receiving subsequent frames after first one */
 
 /* ===== DECRYPTION CONFIGURATION ===== */
-#define GUE_KEY_LENGTH                  16          /* < Length of decryption key in bytes */
-
 #define AES_IV_SIZE                     12          /* < Size of initialization vector */
 #define AES_IV_SYST_LENGTH_OFFSET       1           /* < Offset at which the length of the system title is stored in the initialization vector */
 
-/* Decryption key */
-const uint8_t gue_key[GUE_KEY_LENGTH] = {0x52, 0xFC, 0xF7, 0x0B, 0xC3, 0x94, 0x9B, 0x61, 0x3E, 0xC9, 0xE7, 0xB1, 0x5F, 0xAD, 0x55, 0xEF};
+/**
+ * @brief Parser for DLMS-Layer
+ * 
+ * @param user_data user data from mbus layer
+ * @param user_data_size size of user data
+ * @param decrypted_data decrypted user data
+ * @param decrypted_data_size size of decrypted user data
+ * @param gue_key key used for decryption
+ * @return esp_err_t 
+ */
+esp_err_t parse_dlms_layer(uint8_t* user_data, size_t user_data_size, uint8_t* decrypted_data, size_t* decrypted_data_size, const uint8_t* gue_key);
             
 #ifdef __cplusplus
 } // extern "C"

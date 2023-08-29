@@ -1,5 +1,5 @@
 /**
- * @file dlms.h
+ * @file obis.h
  * @brief Many things are copied from: https://github.com/DomiStyle/esphome-dlms-meter
  * @copyright Copyright (c) 2023
  * 
@@ -11,6 +11,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include "esp_check.h"
 
 /* ===== FOR OBIS HEADER ===== */
 #define OBIS_HEADER_START                           0x0F    /* < First byte, check if this is long invoke type */
@@ -207,6 +209,14 @@ static const uint8_t ESPDM_REACTIVE_ENERGY_MINUS[] =
     0x04, 0x08
 };
 
+/**
+ * @brief 
+ * 
+ * @param obis_data 
+ * @param obis_data_size 
+ * @return esp_err_t 
+ */
+esp_err_t parse_obis(uint8_t* obis_data, size_t obis_data_size);
 
 #ifdef __cplusplus
 } // extern "C"
