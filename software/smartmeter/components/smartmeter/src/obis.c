@@ -15,14 +15,14 @@ static const char* TAG = "OBIS";
 #include "obis.h"
 
 /* ===== OBIS Layer ===== */
-static parse_obis_data_type(uint8_t* obis_data, size_t* curr_offset)
+esp_err_t parse_obis_data_type(uint8_t* obis_data, size_t* curr_offset)
 {
     /* Check which data type to expect */
     switch(obis_data[*curr_offset])
     {
         case NullData:
             /* No following data, skip */
-            *curr_offset++;
+            (*curr_offset)++;
             break;
         case Array:
             /* Check how many entries are in array */
@@ -54,6 +54,7 @@ static parse_obis_data_type(uint8_t* obis_data, size_t* curr_offset)
             ESP_LOGE(TAG, "Unsupported data type");
             return ESP_FAIL;
     }
+    return ESP_OK;
 }
 
 esp_err_t parse_obis(uint8_t* obis_data, size_t obis_data_size)
