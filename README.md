@@ -57,7 +57,7 @@ Each layer will be handled by a parser.
 See the diagram to understand the structure and how the parser handles the data:
 <img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/smartmeter_data.jpg?raw=true" />
 
-### Sources
+## Sources
  * [esphome-dlms-meter](https://github.com/DomiStyle/esphome-dlms-meter)
  * [SmartMeter P1 Interface](https://www.netz-noe.at/Download-(1)/Smart-Meter/218_9_SmartMeter_Kundenschnittstelle_lektoriert_14.aspx)
  * [M-Bus Specification, Page 22+](https://m-bus.com/assets/downloads/MBDOC48.PDF)
