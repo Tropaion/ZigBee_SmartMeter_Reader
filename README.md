@@ -74,4 +74,4 @@ The first version of the enclosure is released and now in printing.
 # Attribution
 Thanks to EspressIf for sponsoring two samples of [ESP32-C6-MINI-1U](https://www.espressif.com/sites/default/files/documentation/esp32-mini-1_datasheet_en.pdf).
 
-Thanks to [PCBWay](https://www.pcbway.com/) for sponsoring the production of v0.2 of the PCB and Stencil. It was my first time using their service and they have nice customer service and great build quality. The image in the hardware section shows the result of v0.2.
+Thanks to [PCBWay](https://www.pcbway.com/) for sponsoring the production of the PCB and Stencil for v0.2. It was my first time using their service and they have nice customer service and great build quality. The image in the hardware section shows the result of v0.2.
