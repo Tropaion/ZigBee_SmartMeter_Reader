@@ -1,5 +1,5 @@
 # ZigBee_SmartMeter_Reader
-This is a open-source ZigBee device based on the new ESP32-C6 to collect data from smartmeters using the DLMS/COSEM protocol.
+This is an open-source ZigBee device based on the new ESP32-C6 to collect data from smartmeters using the DLMS/COSEM protocol.
 
 Ever since I got the smartmeter "Sagemcom T-210D" with the P1 user interface, I wanted to integrate it into my ZigBee network.
 Since I didn't find any existing solution, I decided to develop my own.
@@ -16,24 +16,24 @@ The same hardware could also be used with WLAN and ESPHome.
 <img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/pcb.png?raw=true" width="35%" />
 <img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/pcb_real.jpg?raw=true" width="35%" />
 
-For this project, I used the [ESP32-C6-MINI-1U](https://www.espressif.com/sites/default/files/documentation/esp32-mini-1_datasheet_en.pdf), thanks to espressif for providing me a few samples.
-I choose the version with external antenna, since, in most cases, the devices will be mounted in an isolated meter box. And, since many of them are made of metal (faraday cage), like in my case, 
-I opted for and external antenna to mount on the outside of the meter box.
+For this project, I used the [ESP32-C6-MINI-1U](https://www.espressif.com/sites/default/files/documentation/esp32-mini-1_datasheet_en.pdf).
+I chose the version with an external antenna, since, in most cases, the devices will be mounted in an isolated meter box. And, since many of them are made of metal (Faraday cage), like in my case, 
+I opted for an external antenna to mount on the outside of the meter box.
 
 To provide easy flashing and debugging the USB-C-Socket is connected to the ESP internal USB-JTAG-Converter.
-For the case that the converter is not working, the UART0 programming interface is connected to J2 and J3, which will not be assembled.
+In the case that the converter is not working, the UART0 programming interface is connected to J2 and J3, which will not be assembled.
 
 For production use in the meter box, only the 5V supply terminal (J5) which in my case will be connected to a 5V DIN Power Supply and RJ12 (J1) cable going to the smartmeter is needed.
 
-Since most smartmeters send encrypted data, for which you need to request an decryption key from your provider.
+Since most smartmeters send encrypted data, for which you need to request a decryption key from your provider.
 This key has to be configured in the software. The current plan for this is to provide a simple configuration terminal which is accessible via the USB-C-Socket.
 
 # Software
 The software will be separated into three core components/libraries.
 Each will be individually tested and then combined.
-- [x] human_interface - handle button input and led (working)
-- [x] zigbee - handle zigbee basic functions
-- [x] zigbee_electricity_meter - handle everything zigbee and electricity meter related (cluster)
+- [x] human_interface - handles button input and led (working)
+- [x] zigbee - handles zigbee basic functions
+- [x] zigbee_electricity_meter - handles everything zigbee and electricity meter related (cluster)
 - [ ] smartmeter - read data via uart, parse layers and decrypt data
 
 Possible additional functionalities:
@@ -51,7 +51,7 @@ How the data is handled is a bit complicated and consists of three layers:
 
 Each layer will be handled by a parser.
 
-See the diagramm to understand the structure and how the parser handles the data:
+See the diagram to understand the structure and how the parser handles the data:
 <img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/smartmeter_data.jpg?raw=true" />
 
 ### Sources
@@ -67,3 +67,8 @@ The first version of the enclosure is released and now in printing.
 <img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/Enclosure_1.png?raw=true" width="35%" />
 <img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/Enclosure_2.png?raw=true" width="35%" />
 <img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/Enclosure_3.png?raw=true" width="35%" />
+
+# Attribution
+Thanks to EspressIf for sponsoring two samples of [ESP32-C6-MINI-1U](https://www.espressif.com/sites/default/files/documentation/esp32-mini-1_datasheet_en.pdf).
+
+Thanks to [PCBWay](https://www.pcbway.com/) for sponsoring the production of v0.2 of the PCB and Stencil. It was my first time using their service and they have nice customer service and great build quality. The image in the hardware section shows the result of v0.2.

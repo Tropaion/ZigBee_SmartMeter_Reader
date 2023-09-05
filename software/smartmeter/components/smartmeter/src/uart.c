@@ -159,7 +159,7 @@ static void uart_event_task(void *pvParameters)
             if(err == ESP_OK)
             {
                 /* Process dlms data from buffer0 */
-                err = parse_obis(&buff0[0], buff0_size);
+                //err = parse_obis(&buff0[0], buff0_size);
             }
             
             /* Check if parsing failed */
