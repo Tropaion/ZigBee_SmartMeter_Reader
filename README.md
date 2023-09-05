@@ -13,8 +13,11 @@ You can also view the latest [Schematic](https://kicanvas.org/?github=https%3A%2
 
 The same hardware could also be used with WLAN and ESPHome.
 
-<img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/pcb.png?raw=true" width="35%" />
-<img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/pcb_real.jpg?raw=true" width="35%" />
+<p float="left">
+  <img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/pcb.png?raw=true" width="40%" />
+  <img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/pcb_real.jpg?raw=true" width="40%" />
+</p>
+
 
 For this project, I used the [ESP32-C6-MINI-1U](https://www.espressif.com/sites/default/files/documentation/esp32-mini-1_datasheet_en.pdf).
 I chose the version with an external antenna, since, in most cases, the devices will be mounted in an isolated meter box. And, since many of them are made of metal (Faraday cage), like in my case, 
