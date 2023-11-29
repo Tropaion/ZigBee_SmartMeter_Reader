@@ -4,6 +4,9 @@ This is an open-source ZigBee device based on the new ESP32-C6 to collect data f
 Ever since I got the smartmeter "Sagemcom T-210D" with the P1 user interface, I wanted to integrate it into my ZigBee network.
 Since I didn't find any existing solution, I decided to develop my own.
 
+If someone is interested in buying an assembled PCB, pm me.
+Currently I have one board with external antenna available.
+
 THE PROJECT IS STILL WIP.
 
 # Hardware
