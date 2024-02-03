@@ -70,9 +70,7 @@ See the diagram to understand the structure and how the parser handles the data:
 # Enclosue
 The first version of the enclosure is released and now in printing.
 
-<img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/Enclosure_1.png?raw=true" width="35%" />
-<img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/Enclosure_2.png?raw=true" width="35%" />
-<img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/Enclosure_3.png?raw=true" width="35%" />
+<img src="https://github.com/Tropaion/ZigBee_SmartMeter_Reader/blob/main/images/Enclosure.png?raw=true" width="35%" />
 
 # Attribution
 Thanks to EspressIf for sponsoring two samples of [ESP32-C6-MINI-1U](https://www.espressif.com/sites/default/files/documentation/esp32-mini-1_datasheet_en.pdf).
